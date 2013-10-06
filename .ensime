@@ -1,0 +1,45 @@
+;; If your project contains a lot of files, it is advisable to enable (:disable-source-load-on-startup t)
+;; Otherwise Ensime might incur a massive lag at startup time
+;; See more information about that at http://aemoncannon.github.com/ensime/index.html
+
+(
+  :subprojects (
+    (
+      :name "Lanyard"
+      :module-name "lanyard"
+      :depends-on-modules (
+      
+      )
+      :package "lanyard"
+      :version "0.01"
+      :compile-deps (
+        "/home/fabian/.ivy2/cache/org.scala-lang/scala-library/jars/scala-library-2.10.0.jar"
+      )
+      :runtime-deps (
+        "/home/fabian/.ivy2/cache/org.scala-lang/scala-library/jars/scala-library-2.10.0.jar"
+        "/home/fabian/code/Lanyard/target/scala-2.10/classes"
+        "/home/fabian/code/Lanyard/target/scala-2.10/classes"
+      )
+      :test-deps (
+        "/home/fabian/.ivy2/cache/org.scalatest/scalatest_2.10/jars/scalatest_2.10-1.9.1.jar"
+        "/home/fabian/.ivy2/cache/org.scala-lang/scala-reflect/jars/scala-reflect-2.10.0.jar"
+        "/home/fabian/.ivy2/cache/org.scalacheck/scalacheck_2.10/jars/scalacheck_2.10-1.10.1.jar"
+        "/home/fabian/.ivy2/cache/org.scala-lang/scala-library/jars/scala-library-2.10.1.jar"
+        "/home/fabian/.ivy2/cache/org.scala-tools.testing/test-interface/jars/test-interface-0.5.jar"
+        "/home/fabian/.ivy2/cache/org.scala-lang/scala-actors/jars/scala-actors-2.10.1.jar"
+        "/home/fabian/code/Lanyard/target/scala-2.10/classes"
+        "/home/fabian/code/Lanyard/target/scala-2.10/test-classes"
+      )
+      :source-roots (
+        "/home/fabian/code/Lanyard/src/main/scala"
+        "/home/fabian/code/Lanyard/src/main/java"
+        "/home/fabian/code/Lanyard/target/scala-2.10/src_managed/main"
+        "/home/fabian/code/Lanyard/src/test/scala"
+        "/home/fabian/code/Lanyard/src/test/java"
+        "/home/fabian/code/Lanyard/target/scala-2.10/src_managed/test"
+      )
+      :target "/home/fabian/code/Lanyard/target/scala-2.10/classes"
+      :test-target "/home/fabian/code/Lanyard/target/scala-2.10/test-classes"
+    )
+  )
+)

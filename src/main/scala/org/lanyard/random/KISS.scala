@@ -1,0 +1,47 @@
+package org.lanyard.random
+
+/** 64-bit version of the KISS (P)RNG [[http://mathforum.org/kb/message.jspa?messageID=6627731 proposed]] by George Marsaglia himself.
+  * It is composed out of three simple but fast RNGs each nearly good enough to serve alone but succeeding in cooperation.
+  */
+case class KISS(
+  val x: Long,
+  val y: Long,
+  val z: Long,
+  val c: Long) extends RNG {
+
+  /** Computes a step of the RNG.
+    * 
+    * @return Pair of a random `Long` and an updated KISS generator.
+    */
+  def nextLong: ( Long, KISS ) = {
+    val ( newX, newC ) = mwc( x, c )
+    val newY = xsh( y )
+    val newZ = cng( z )
+    ( newX + newY + newZ, KISS( newX, newY, newZ, newC ) )
+  }
+
+  private def signBit( x: Long ): Long = x >>> 63
+
+  /** Computes an X-or-shift step. */
+  private def xsh( y: Long ): Long = {
+    var newY = y ^ ( y << 13 )
+    newY ^= ( newY >>> 17 )
+    newY ^= ( newY << 43 )
+    newY
+  }
+
+  /** Computes a [[http://en.wikipedia.org/wiki/Linear_congruential_generator Linear congruential generator]] 
+    * step.
+    */
+  private def cng( z: Long ): Long = z * 6906969069L + 1234567L
+
+  /** Computes a [[http://en.wikipedia.org/wiki/Multiply-with-carry Multiply-with-Carry]] step. */
+  private def mwc( x: Long, c: Long ): ( Long, Long ) = {
+    val t = ( x << 58 ) + c
+    if ( signBit( x ) == signBit( t ) ) {
+      ( x + t, ( x >>> 6 ) + signBit( x ) )
+    } else {
+      ( x + t, ( x >>> 6 ) + 1L - signBit( x + t ) )
+    }
+  }
+}
