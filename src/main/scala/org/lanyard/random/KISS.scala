@@ -4,10 +4,10 @@ package org.lanyard.random
   * It is composed out of three simple but fast RNGs each nearly good enough to serve alone but succeeding in cooperation.
   */
 case class KISS(
-  val x: Long,
-  val y: Long,
-  val z: Long,
-  val c: Long) extends RNG {
+  val x: Long = 1234567890987654321L,
+  val y: Long = 362436362436362436L,
+  val z: Long = 1066149217761810L,
+  val c: Long = 123456123456123456L ) extends RNG {
 
   /** Computes a step of the RNG.
     * 
@@ -20,9 +20,10 @@ case class KISS(
     ( newX + newY + newZ, KISS( newX, newY, newZ, newC ) )
   }
 
+  /** Extracts the sign bit of a `Long`. */
   private def signBit( x: Long ): Long = x >>> 63
 
-  /** Computes an X-or-shift step. */
+  /** Computes a X-or-shift step. */
   private def xsh( y: Long ): Long = {
     var newY = y ^ ( y << 13 )
     newY ^= ( newY >>> 17 )
@@ -30,7 +31,7 @@ case class KISS(
     newY
   }
 
-  /** Computes a [[http://en.wikipedia.org/wiki/Linear_congruential_generator Linear congruential generator]] 
+  /** Computes a [[http://en.wikipedia.org/wiki/Linear_congruential_generator Linear congruential generator]]
     * step.
     */
   private def cng( z: Long ): Long = z * 6906969069L + 1234567L

@@ -28,9 +28,12 @@ trait RNG {
   def nextDouble: (Double, RNG) = {
     val (l, rng) = nextLong
     // -9.223372036854776E18 == Long.MIN_VALUE.toDouble
-    // 5.421010862427522E-20 == 1 / ( Long.MAX_VALUE.toDouble - Long.MIN_VALUE.toDouble);
-    val double = ( l.toDouble - -9.223372036854776E18 ) * 5.421010862427522E-20
-    if( 0.0 < double && double < 1 ) (double, rng) else rng.nextDouble
+    // 5.42101086242752217E-20 == 1 / ( Long.MAX_VALUE.toDouble - Long.MIN_VALUE.toDouble);
+    val nextDouble =  (l + 9.223372036854776E18) * 5.42101086242752217E-20
+    if ( 0.0 < nextDouble && nextDouble < 1.0) 
+      ( nextDouble, rng)
+    else
+      rng.nextDouble
   }
 
   /** Computes a random bit.
@@ -41,5 +44,4 @@ trait RNG {
     val (l, rng) = nextLong
     ((l & 1L) == 1L, rng) // if lsb is set
   }
-
 }

@@ -1,5 +1,7 @@
 package org.lanyard.random
 
+import scala.annotation.tailrec
+
 trait Random[A] {
 
   def random( source: RNG ): (A, RNG)

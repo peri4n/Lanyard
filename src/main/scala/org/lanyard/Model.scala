@@ -9,6 +9,8 @@ trait Model[A] extends ( A => Prob ) {
   /** Type of the parameters of the model */
   type Parameter 
 
+  def factory( implicit ev: ModelFac[Model[A]]) = ev
+
   /** Assigns a log-probability to a value of type A
     * 
     * @param value Value to compute the probability for

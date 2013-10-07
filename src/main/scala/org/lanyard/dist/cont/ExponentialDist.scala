@@ -10,26 +10,41 @@ case class ExponentialDist( lambda: Double ) extends Distribution[Double] {
 
   type Parameter = Double
 
+  /** Mean of the beta distribution */
   val mean = 1 / lambda
 
+  /** Variance of the beta distribution */
   val variance = 1 / (lambda * lambda)
 
+  /** Precomputes the logarithm of lambda for faster computation. */
   private val logLambda = math.log(lambda)
 
+  /** Computes the logarithm of the probability density function.
+    * 
+    * @param value Value to compute the probability for
+    * @return logarithm of the probability
+    */
   def apply( value: Double ): Prob = 
     if( value >= 0 ) 
       logLambda + ( - logLambda * value )
     else 
       Double.NegativeInfinity
 
+  /** Draws a random sample from this exponential distribution.
+    * 
+    * @param source source of randomness
+    * @return pair of an exponential sample and the updated RNG
+    */
   def random(source: RNG): (Double, RNG) = {
     val (d, rng) = source.nextDouble
     (-math.log(d) / lambda, rng)
   }
 }
 
-object ExponentialDist extends ModelFac[ExponentialDist] {
+object ExponentialDist {
 
-  def create( param: Double) = new ExponentialDist(param)
+  implicit object ExponentialDistFactory extends ModelFac[ExponentialDist] {
 
+    def create( lambda: Double) = new ExponentialDist(lambda)
+  }
 }
