@@ -20,6 +20,10 @@ class GammaDist( val shape: Double, val scale: Double ) extends Distribution[Dou
 
   val variance = shape * scale * scale
 
+  val skewness = 2 / math.sqrt( shape )
+
+  val kutorsis = 6 / shape
+
   def apply( value: Double): Prob = 0.0
 
   @tailrec

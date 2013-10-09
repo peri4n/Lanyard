@@ -3,7 +3,7 @@ package org.lanyard.random
 /** 64-bit version of the KISS (P)RNG [[http://mathforum.org/kb/message.jspa?messageID=6627731 proposed]] by George Marsaglia himself.
   * It is composed out of three simple but fast RNGs each nearly good enough to serve alone but succeeding in cooperation.
   */
-case class KISS(
+class KISS(
   val x: Long = 1234567890987654321L,
   val y: Long = 362436362436362436L,
   val z: Long = 1066149217761810L,
@@ -17,7 +17,7 @@ case class KISS(
     val ( newX, newC ) = mwc( x, c )
     val newY = xsh( y )
     val newZ = cng( z )
-    ( newX + newY + newZ, KISS( newX, newY, newZ, newC ) )
+    ( newX + newY + newZ, new KISS( newX, newY, newZ, newC ) )
   }
 
   /** Extracts the sign bit of a `Long`. */
@@ -45,4 +45,17 @@ case class KISS(
       ( x + t, ( x >>> 6 ) + 1L - signBit( x + t ) )
     }
   }
+}
+
+object KISS {
+
+  def apply( seed: Long ): KISS = {
+    val rng = Ranq1( seed )
+    val (draw1, rng1) = rng.forward(10).nextLong
+    val (draw2, rng2) = rng1.forward(10).nextLong
+    val (draw3, rng3) = rng2.forward(10).nextLong
+    val (draw4, rng4) = rng3.forward(10).nextLong
+    new KISS( draw1, draw2, draw3, draw4 )
+  }
+
 }

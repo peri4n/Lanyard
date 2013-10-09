@@ -5,11 +5,15 @@ import org.lanyard.dist.Distribution
 import org.lanyard.random.RNG
 import scala.annotation.tailrec
 
-case class NormalDist( mu: Double = 0, variance: Double = 1) extends Distribution[Double] {
+case class NormalDist( mean: Double = 0, variance: Double = 1) extends Distribution[Double] {
 
   require( variance > 0, "Normal distribution parameter variance needs to be strictly positive. Found value: " + variance )
 
   val stdDeviation = math.sqrt( variance )
+
+  val skewness = 0.0
+
+  val kurtosis = 0.0
 
   def apply( value: Double): Prob = 0.0
 
@@ -24,6 +28,6 @@ case class NormalDist( mu: Double = 0, variance: Double = 1) extends Distributio
     if( q > 0.27597 && ( q > 0.27846 || (v*v) > -4.0 * math.log(draw1) * draw1 * draw1 ))
       random(rng2)
     else
-      (mu + stdDeviation * v / draw1, rng2)
+      (mean + stdDeviation * v / draw1, rng2)
   }
 }
