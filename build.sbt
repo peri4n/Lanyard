@@ -5,7 +5,7 @@ version := "0.01"
 scalaVersion := "2.10.0"
 
 libraryDependencies ++= Seq (
-		    "org.scalatest" % "scalatest_2.10" % "1.9.1" % "test",
+		    "org.scalatest" %% "scalatest" % "1.9.2" % "test",
 		    "org.scalacheck" %% "scalacheck" % "1.10.1" % "test"
 )
 

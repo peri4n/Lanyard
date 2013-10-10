@@ -9,11 +9,11 @@ case class NormalDist( mean: Double = 0, variance: Double = 1) extends Distribut
 
   require( variance > 0, "Normal distribution parameter variance needs to be strictly positive. Found value: " + variance )
 
-  val stdDeviation = math.sqrt( variance )
+  def stdDeviation = math.sqrt( variance )
 
-  val skewness = 0.0
+  def skewness = 0.0
 
-  val kurtosis = 0.0
+  def kurtosis = 0.0
 
   def apply( value: Double): Prob = 0.0
 
