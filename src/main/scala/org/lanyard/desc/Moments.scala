@@ -31,14 +31,12 @@ case class Moments( moment0: Long = 0, moment1: Double = 0, moment2: Double = 0,
   }
 
   def skewness: Option[Double] = moment0 match {
-    case 0 => None
-    case 1 => None
+    case x if x < 3 => None 
     case _ => Some(moment3 * moment0 * moment0 / (math.sqrt(variance.get) * variance.get * ( moment0 - 1) * (moment0 - 2)))
   }
 
   def kurtosis: Option[Double] = moment0 match {
-    case 0 => None
-    case 1 => None
+    case x if x < 4 => None
     case _ => {
       val kFact = (moment0 - 2) * (moment0 - 3)
       val n1 = moment0 - 1

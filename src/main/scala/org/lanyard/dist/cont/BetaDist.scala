@@ -5,10 +5,13 @@ import org.lanyard.dist.Distribution
 import org.lanyard.random.RNG
 import org.lanyard.util.LogGamma
 
-case class BetaDist( alpha: Double, beta: Double) extends Distribution[Double] {
+case class BetaDist private( val alpha: Double, val beta: Double) extends Distribution[Double] {
 
   require( alpha > 0, "Beta distribution parameter alpha needs to be stricly positive. Found value: " + alpha)
   require( beta > 0, "Beta distribution parameter beta needs to be stricly positive. Found value: " + beta)
+
+  private val alphaGamma = GammaDist(alpha, 1)
+  private val betaGamma = GammaDist(beta, 1)
 
   /** Precomputes the constant term used in the probability density function. */
   private val constantTerm = LogGamma( alpha + beta ) - LogGamma( alpha ) - LogGamma( beta )
@@ -34,5 +37,10 @@ case class BetaDist( alpha: Double, beta: Double) extends Distribution[Double] {
     * @param source source of randomness
     * @return pair of a beta sample and the updated RNG
     */
-  def random( source: RNG): (Double, RNG) = (0.0, null)
+  def random( source: RNG): (Double, RNG) = {
+    val (d1, rng1) = alphaGamma.random(source)
+    val (d2, rng2) = betaGamma.random(rng1)
+    (d1 / (d1 + d2), rng2)
+  }
 }
+

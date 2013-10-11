@@ -1,5 +1,6 @@
 package org.lanyard.dist.cont
 
+import java.io.PrintWriter
 import org.lanyard.desc.Moments
 import org.lanyard.random.KISS
 import org.scalacheck.Gen
@@ -13,18 +14,22 @@ class GammaDistTest extends FunSpec with ShouldMatchers with GeneratorDrivenProp
 
     val DrawsPerTest = 1000000
 
-    ignore("can be sampled.") {
+    it("samples should have the correct moments.") {
       forAll( 
         (Gen.choose(Long.MinValue, Long.MaxValue), "seed"),
         (Gen.choose(Double.MinPositiveValue, 100.0), "shape"),
-        (Gen.choose(Double.MinPositiveValue, 100.0), "scale")) { ( seed: Long, shape: Double, scale: Double ) => {
+        (Gen.choose(Double.MinPositiveValue, 10.0), "scale")) { ( seed: Long, shape: Double, scale: Double ) => {
           val rng = KISS(seed)
-          val dist = new GammaDist(shape, scale)
+          val dist = GammaDist(shape, scale)
           val samples = dist.randoms(rng).take(DrawsPerTest)
-          val mom = samples.foldLeft(Moments()){ (acc, x) => acc :+ x }
 
-//          mom.average should be( dist.mean plusOrMinus 0.5 )
-//          mom.variance should be( dist.variance plusOrMinus 1.5 )
+          val writer = new PrintWriter("/home/fabian/gamma", "UTF-8")
+          samples.foreach( writer.println )
+          writer.close
+
+          val mom = samples.foldLeft(Moments()){ (acc, x) => acc :+ x }
+          mom.average.get should be( dist.mean plusOrMinus 0.5 )
+          mom.variance.get should be( dist.variance plusOrMinus 10 )
         }
       }
     }

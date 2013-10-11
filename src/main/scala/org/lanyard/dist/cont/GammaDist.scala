@@ -5,29 +5,32 @@ import org.lanyard.dist.Distribution
 import org.lanyard.random.RNG
 import scala.annotation.tailrec
 
-class GammaDist( val shape: Double, val scale: Double ) extends Distribution[Double] {
+/** Gamma distribution.
+  * 
+  */
+class GammaDist private( val shape: Double, val scale: Double, private val oshape: Double ) extends Distribution[Double] {
 
   import GammaDist._
 
-  require( shape > 0.0, "Gamma distribution parameter shape needs to be strictly positive. Found value: " + shape )
-
-  private lazy val a1 = shape - 1.0 / 3.0
-  private lazy val a2 = 1.0 / math.sqrt(9.0 * a1)
+  require( oshape > 0.0, "Gamma distribution parameter shape needs to be strictly positive. Found value: " + shape )
 
   def rate = 1 / scale
 
-  def mean = shape * scale
+  def mean = oshape * scale
 
-  def variance = shape * scale * scale
+  def variance = oshape * scale * scale
 
-  def skewness = 2 / math.sqrt( shape )
+  def skewness = 2 / math.sqrt( oshape )
 
-  def kutorsis = 6 / shape
+  def kutorsis = 6 / oshape
 
   def apply( value: Double): Prob = 0.0
 
   @tailrec
-  final def random( source: RNG): (Double, RNG) = {
+  final def random( source: RNG ): (Double, RNG) = {
+    val a1 = shape - 1.0 / 3.0
+    val a2 = 1.0 / math.sqrt(9.0 * a1)
+
     @tailrec
     def genNormal( s: RNG) : (Double, Double, RNG) = {
       val (x, rng) = standardNormal.random(s)
@@ -41,11 +44,11 @@ class GammaDist( val shape: Double, val scale: Double ) extends Distribution[Dou
     if( u > 1.0 - 0.331 * x * x * x * x && math.log(u) > 0.5 * x * x + a1 * (1.0 - v + math.log(v)))
       random(rng2)
     else {
-      if( shape >= 2.0 ) {
+      if( shape == oshape ) {
         (a1 * v * scale, rng2)
       } else {
-        val (d, rng3) = rng2.nextDouble
-        (math.pow(d, 1.0 / ( shape - 1)) * a1 * v * scale, rng3)
+        val (u, rng3) = rng2.nextDouble
+        (math.pow(u, 1.0 / oshape) * a1 * v * scale, rng3)
       }
     }
   }
@@ -55,6 +58,7 @@ object GammaDist {
 
   private val standardNormal = NormalDist()
 
-  def apply( shape: Double, scale: Double ): GammaDist = if( shape < 1.0 ) new GammaDist( shape + 1, scale) else new GammaDist(shape, scale)
+  def apply( shape: Double, scale: Double ): GammaDist = if( shape < 1.0 ) new GammaDist( shape + 1, scale, shape) else new GammaDist(shape, scale, shape)
+
 
 }
