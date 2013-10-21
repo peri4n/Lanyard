@@ -1,11 +1,11 @@
 package org.lanyard.dist.cont
 
-import org.lanyard.Prob
+import org.lanyard.LogLike
 import org.lanyard.dist.Distribution
 import org.lanyard.random.RNG
 import scala.annotation.tailrec
 
-case class NormalDist( mean: Double = 0, variance: Double = 1) extends Distribution[Double] {
+case class Gaussian( mean: Double = 0, variance: Double = 1) extends Distribution[Double] {
 
   require( variance > 0, "Normal distribution parameter variance needs to be strictly positive. Found value: " + variance )
 
@@ -15,7 +15,7 @@ case class NormalDist( mean: Double = 0, variance: Double = 1) extends Distribut
 
   def kurtosis = 0.0
 
-  def apply( value: Double): Prob = 0.0
+  def apply( value: Double): LogLike = 0.0
 
   @tailrec
   final def random( source: RNG): (Double, RNG) = {

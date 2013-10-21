@@ -14,21 +14,21 @@ class ExponentialDistTest extends FunSpec with ShouldMatchers with GeneratorDriv
       info("A negative lambda should throw an exception.")
       forAll( (Gen.negNum[Double], "lambda")) { ( lambda: Double ) =>
         intercept[IllegalArgumentException] {
-          ExponentialDist(lambda)
-          ModelFac[ExponentialDist].create(lambda)
+          Exponential(lambda)
+          ModelFac[Exponential].create(lambda)
         }
       }
 
       info("If lambda equals zero, throw an exception")
       intercept[IllegalArgumentException] {
-        ExponentialDist(0.0)
-        ModelFac[ExponentialDist].create(0.0)
+        Exponential(0.0)
+        ModelFac[Exponential].create(0.0)
       }
 
       info("A positive lambda should not throw an exception.")
       forAll( (Gen.posNum[Double], "lambda")) { ( lambda: Double ) =>
-        ExponentialDist(lambda)
-        ModelFac[ExponentialDist].create(lambda)
+        Exponential(lambda)
+        ModelFac[Exponential].create(lambda)
       }
     }
   }

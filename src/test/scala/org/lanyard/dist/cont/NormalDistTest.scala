@@ -20,7 +20,7 @@ class NormalDistTest extends FunSpec with ShouldMatchers with GeneratorDrivenPro
         (Gen.choose(0.0, 100.0), "variance")) {
         ( seed: Long, mean: Double, variance: Double ) => {
           val rng = KISS(seed)
-          val samples = NormalDist(mean,variance).randoms(rng).take(DrawsPerTest)
+          val samples = Gaussian(mean,variance).randoms(rng).take(DrawsPerTest)
           val mom = samples.foldLeft(Moments()){ (acc, x) => acc :+ x }
           mom.count should be(DrawsPerTest)
 //          mom.average should be(mean plusOrMinus 0.2)

@@ -2,6 +2,7 @@ package org
 
 package object lanyard {
 
-  type Prob = Double
+  /** Type to indicate that a double is assumed to be a log likelihood. */
+  type LogLike = Double
 
 }

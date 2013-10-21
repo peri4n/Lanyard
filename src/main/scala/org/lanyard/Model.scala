@@ -4,7 +4,7 @@ package org.lanyard
   * 
   * @tparam A Type of the values to be modeled
   */
-trait Model[A] extends ( A => Prob ) {
+trait Model[A] extends (A => LogLike) {
 
   /** Type of the parameters of the model */
   type Parameter 
@@ -16,6 +16,6 @@ trait Model[A] extends ( A => Prob ) {
     * @param value Value to compute the probability for
     * @return logarithm of the probabilty of the value
     */
-  def probability(value: A): Prob = apply(value)
+  def probability(value: A): LogLike = apply(value)
 
 }

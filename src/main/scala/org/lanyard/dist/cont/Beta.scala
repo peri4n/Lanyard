@@ -5,7 +5,7 @@ import org.lanyard.dist.Distribution
 import org.lanyard.random.RNG
 import org.lanyard.util.LogGamma
 
-case class BetaDist private( val alpha: Double, val beta: Double) extends Distribution[Double] {
+case class Beta private( val alpha: Double, val beta: Double) extends Distribution[Double] {
 
   require( alpha > 0, "Beta distribution parameter alpha needs to be stricly positive. Found value: " + alpha)
   require( beta > 0, "Beta distribution parameter beta needs to be stricly positive. Found value: " + beta)
@@ -27,7 +27,7 @@ case class BetaDist private( val alpha: Double, val beta: Double) extends Distri
     * @param value value to compute the log probability for
     * @return logarithim of the probability if value is in [0,1], negative infinity otherwise
     */
-  def apply( value: Double): Prob = 
+  def apply( value: Double): LogLike = 
     if( 0 <= value && value <= 1)
       constantTerm + ( alpha - 1.0 ) * math.log( value ) + ( beta - 1.0 ) * math.log( 1.0 - value )
     else Double.NegativeInfinity

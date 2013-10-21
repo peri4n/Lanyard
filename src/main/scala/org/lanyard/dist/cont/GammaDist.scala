@@ -1,6 +1,6 @@
 package org.lanyard.dist.cont
 
-import org.lanyard.Prob
+import org.lanyard.LogLike
 import org.lanyard.dist.Distribution
 import org.lanyard.random.RNG
 import scala.annotation.tailrec
@@ -24,7 +24,7 @@ class GammaDist private( val shape: Double, val scale: Double, private val oshap
 
   def kutorsis = 6 / oshape
 
-  def apply( value: Double): Prob = 0.0
+  def apply( value: Double): LogLike = 0.0
 
   @tailrec
   final def random( source: RNG ): (Double, RNG) = {
@@ -56,7 +56,7 @@ class GammaDist private( val shape: Double, val scale: Double, private val oshap
 
 object GammaDist {
 
-  private val standardNormal = NormalDist()
+  private val standardNormal = Gaussian()
 
   def apply( shape: Double, scale: Double ): GammaDist = if( shape < 1.0 ) new GammaDist( shape + 1, scale, shape) else new GammaDist(shape, scale, shape)
 

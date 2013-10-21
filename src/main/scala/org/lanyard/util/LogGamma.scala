@@ -10,7 +10,9 @@ object LogGamma extends ( Double => Double ) {
     -.261908384015814087e-4, .368991826595316234e-5 )
 
   def apply( value: Double ): Double = {
-    assert( value > 0, "Argument needs to be non-negative." )
+
+    require( value > 0, "Argument of LogGamma needs to be strictly positive. Found value: " + value )
+
     var y = value
     var tmp = value + 5.24218750000000000
     tmp = ( value + 0.5 ) * math.log( tmp ) - tmp

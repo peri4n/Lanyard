@@ -4,7 +4,7 @@ import org.lanyard._
 import org.lanyard.dist.Distribution
 import org.lanyard.random.RNG
 
-case class ExponentialDist( lambda: Double ) extends Distribution[Double] {
+case class Exponential( lambda: Double ) extends Distribution[Double] {
 
   require( lambda > 0, "Exponential distribution parameter lambda needs to be strictly positive. Found value: " + lambda )
 
@@ -24,7 +24,7 @@ case class ExponentialDist( lambda: Double ) extends Distribution[Double] {
     * @param value Value to compute the probability for
     * @return logarithm of the probability
     */
-  def apply( value: Double ): Prob = 
+  def apply( value: Double ): LogLike = 
     if( value >= 0 ) 
       logLambda + ( - logLambda * value )
     else 
@@ -41,10 +41,10 @@ case class ExponentialDist( lambda: Double ) extends Distribution[Double] {
   }
 }
 
-object ExponentialDist {
+object Exponential {
 
-  implicit object ExponentialDistFactory extends ModelFac[ExponentialDist] {
+  implicit object ExponentialDistFactory extends ModelFac[Exponential] {
 
-    def create( lambda: Double) = new ExponentialDist(lambda)
+    def create( lambda: Double) = new Exponential(lambda)
   }
 }

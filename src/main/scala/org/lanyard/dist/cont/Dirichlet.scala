@@ -5,9 +5,9 @@ import org.lanyard.dist.Distribution
 import org.lanyard.random.RNG
 import org.lanyard.util.LogGamma
 
-class DirichletDist ( val alphas: Array[Double] ) extends Distribution[Array[Double]] {
+class Dirichlet private( private val alphas: Array[Double] ) extends Distribution[Array[Double]] {
 
-  private val dimension = alphas.length
+  val dimension = alphas.length
 
   private lazy val gammas = alphas.map( GammaDist( _ , 1.0) )
 
@@ -15,14 +15,17 @@ class DirichletDist ( val alphas: Array[Double] ) extends Distribution[Array[Dou
 
   private def sumsToOne( values: Array[Double] ): Boolean = math.abs(values.sum - 1) < 1E-10
 
-  def apply( value: Array[Double] ): Prob = { 
-    var (i, sum) = (0, 0.0)
-    while( i < dimension) {
-      sum += ( alphas(i) - 1 ) * math.log(value(i))
-      i += 1
+  def apply( value: Array[Double] ): LogLike = 
+    if( sumsToOne( value ) && value.length == alphas.length ) { // value is in the domain of dirichlet
+      var (i, sum) = (0, 0.0)
+      while( i < dimension) {
+        sum += ( alphas(i) - 1 ) * math.log(value(i))
+        i += 1
+      }
+      constantTerm + sum
+    } else { // dirichlet is not defined at value
+      Double.NegativeInfinity
     }
-    constantTerm + sum
-  }
 
   def random( source: RNG): (Array[Double], RNG) = {
     val draw = Array.ofDim[Double]( dimension )
@@ -46,6 +49,17 @@ class DirichletDist ( val alphas: Array[Double] ) extends Distribution[Array[Dou
   }
 }
 
+object Dirichlet {
+
+  def apply( alphas: Array[Double] ): Dirichlet = {
+
+    require( alphas.forall( _ > 0.0 ), "Dirichlet distribution parameter alphas has to have strictly positive elements. Found value: " + alphas.mkString(" ") )
+
+    new Dirichlet( alphas.clone )
+
+  }
+
+}
 
 
 
