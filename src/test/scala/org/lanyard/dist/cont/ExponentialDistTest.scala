@@ -1,6 +1,6 @@
 package org.lanyard.dist.cont
 
-import org.lanyard.ModelFac
+import org.lanyard.MeasureFac
 import org.scalacheck.Gen
 import org.scalatest.FunSpec
 import org.scalatest.matchers.ShouldMatchers
@@ -15,20 +15,20 @@ class ExponentialDistTest extends FunSpec with ShouldMatchers with GeneratorDriv
       forAll( (Gen.negNum[Double], "lambda")) { ( lambda: Double ) =>
         intercept[IllegalArgumentException] {
           Exponential(lambda)
-          ModelFac[Exponential].create(lambda)
+          MeasureFac[Exponential].create(lambda)
         }
       }
 
       info("If lambda equals zero, throw an exception")
       intercept[IllegalArgumentException] {
         Exponential(0.0)
-        ModelFac[Exponential].create(0.0)
+        MeasureFac[Exponential].create(0.0)
       }
 
       info("A positive lambda should not throw an exception.")
       forAll( (Gen.posNum[Double], "lambda")) { ( lambda: Double ) =>
         Exponential(lambda)
-        ModelFac[Exponential].create(lambda)
+        MeasureFac[Exponential].create(lambda)
       }
     }
   }

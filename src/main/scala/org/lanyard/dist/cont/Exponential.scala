@@ -43,7 +43,7 @@ case class Exponential( lambda: Double ) extends Distribution[Double] {
 
 object Exponential {
 
-  implicit object ExponentialDistFactory extends ModelFac[Exponential] {
+  implicit object ExponentialDistFactory extends MeasureFac[Exponential] {
 
     def create( lambda: Double) = new Exponential(lambda)
   }
