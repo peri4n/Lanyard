@@ -17,7 +17,7 @@ class Categorial[A]( weights: Array[Double] )(implicit disc: Discrete[A]) extend
     while( doub < cummulative(i) ) {
       i+= 1
     }
-    i
+    (fromInt( i ), rng)
   }
 
 }

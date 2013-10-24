@@ -6,11 +6,6 @@ package org.lanyard
   */
 trait Measure[A] extends (A => Double) {
 
-  /** Type of the parameters of the model */
-  type Parameter 
-
-  def factory( implicit ev: MeasureFac[Measure[A]]) = ev
-
   /** Assigns an unnormalized score to a value.
     * 
     * @param value Value to assign a score to
@@ -23,6 +18,6 @@ trait Measure[A] extends (A => Double) {
     * @param value Value to compute the probability for
     * @return logarithm of the probabilty of the value
     */
-  def logLike(value: A): LogLike = math.log(apply(value))
+  def logLike(value: A): LogLike = math.log( apply( value ) )
 
 }

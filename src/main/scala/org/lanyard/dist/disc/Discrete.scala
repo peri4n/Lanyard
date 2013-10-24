@@ -10,34 +10,25 @@ trait Discrete[A] {
 
   import math._
 
-  /** Translates `elem` to an `Int`.
+  /** Convertes values of type `A` to `Int`.
+    * 
     * @param elem element of the alphabet
     * @return rank of the element
     */
   def asInt( elem: A ): Int
 
+  /** Convertes integers to values of type `A`.
+    * 
+    * @param rank rank of the element in the alphabet
+    * @return element of the alphabet
+    */
   def fromInt( rank: Int): A
 
+  /** Returns the size of the alphabet. */
   def size: Int
 
+  /** Computes the number of bits to store elemets of this alphabet. */
   def bitsPerSymbol: Int = ceil( log( size.toDouble ) / log( 2.0 ) ).toInt
-
-  def markovHashes( seq: IndexedSeq[A], order: Int ): Array[Int] = {
-    val hashes = new Array[Int]( seq.length )
-    hashes( 0 ) = asInt( seq( 0 ) )
-
-    var pos = 1
-    while( pos < seq.length ) {
-      val element = asInt( seq(pos) )
-      if( pos <= order ) {
-        hashes( pos ) = hashes( pos - 1 ) + (element * pow( size, pos )).toInt
-      } else {
-        hashes( pos ) = (hashes( pos - 1 ) >>> bitsPerSymbol) + (element * pow( size, order )).toInt
-      }
-      pos += 1
-    }
-    hashes
-  }
 
 }
 

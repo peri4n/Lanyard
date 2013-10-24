@@ -5,7 +5,7 @@ import org.scalatest.FunSpec
 import org.scalatest.matchers.ShouldMatchers
 import org.scalatest.prop.GeneratorDrivenPropertyChecks
 
-class HomoDiscMarkovTest extends FunSpec with ShouldMatchers with GeneratorDrivenPropertyChecks {
+class HoMarkovTest extends FunSpec with ShouldMatchers with GeneratorDrivenPropertyChecks {
 
   describe("Homogeneous discrete markov chain") {
 
@@ -19,7 +19,7 @@ class HomoDiscMarkovTest extends FunSpec with ShouldMatchers with GeneratorDrive
       implicit val dna = Discrete( A, C, G, T )
       val seq = Array(A, C, G, A )
 
-      val markov1 = new HomoDiscMarkov(0, Array(Array(0.25, 0.25, 0.25, 0.25)) )
+      val markov1 = new HoMarkov(0, Array(Array(0.25, 0.25, 0.25, 0.25)) )
 
       val like = markov1.logLike( seq )
       println( like )
@@ -32,7 +32,7 @@ class HomoDiscMarkovTest extends FunSpec with ShouldMatchers with GeneratorDrive
         Array(0.0, 0.0, 0.0, 0.0)) // given T
 
 
-      val markov2 = new HomoDiscMarkov(1, probs )
+      val markov2 = new HoMarkov(1, probs )
 
       val like2 = markov2( seq )
       println( like2 )

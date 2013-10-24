@@ -1,5 +1,6 @@
 package org.lanyard.dist.cont
 
+import org.lanyard.dist.DistFactory
 import org.lanyard._
 import org.lanyard.dist.Distribution
 import org.lanyard.random.RNG
@@ -43,8 +44,15 @@ case class Exponential( lambda: Double ) extends Distribution[Double] {
 
 object Exponential {
 
-  implicit object ExponentialDistFactory extends MeasureFac[Exponential] {
+  /** Distribution factory of the exponential distribution */
+  implicit object ExponentialDistFactory extends DistFactory[Exponential] {
 
+    /** Create an exponential distribution
+      * 
+      * @param lambda lambda parameter
+      * @return exponential distribution with given lambda
+      */
     def create( lambda: Double) = new Exponential(lambda)
   }
+
 }
