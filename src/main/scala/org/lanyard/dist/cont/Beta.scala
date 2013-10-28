@@ -20,8 +20,8 @@ case class Beta( val alpha: Double, val beta: Double) extends Distribution[Doubl
   require( beta > 0, "Beta distribution parameter beta needs to be stricly positive. Found value: " + beta)
 
   /** Gamma distributions used for sampling */
-  private val alphaGamma = Gamma(alpha, 1)
-  private val betaGamma = Gamma(beta, 1)
+  private val lazy alphaGamma = Gamma(alpha, 1)
+  private val lazy betaGamma = Gamma(beta, 1)
 
   /** Precomputes the constant term used in the probability density function. */
   private lazy val constantTerm = LogGamma( alpha + beta ) - LogGamma( alpha ) - LogGamma( beta )
