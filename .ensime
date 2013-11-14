@@ -21,7 +21,7 @@
         "/home/fabian/code/Lanyard/target/scala-2.10/classes"
       )
       :test-deps (
-        "/home/fabian/.ivy2/cache/org.scalatest/scalatest_2.10/jars/scalatest_2.10-1.9.1.jar"
+        "/home/fabian/.ivy2/cache/org.scalatest/scalatest_2.10/jars/scalatest_2.10-2.0.RC3.jar"
         "/home/fabian/.ivy2/cache/org.scala-lang/scala-reflect/jars/scala-reflect-2.10.0.jar"
         "/home/fabian/.ivy2/cache/org.scalacheck/scalacheck_2.10/jars/scalacheck_2.10-1.10.1.jar"
         "/home/fabian/.ivy2/cache/org.scala-lang/scala-library/jars/scala-library-2.10.1.jar"

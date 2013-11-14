@@ -1,6 +1,7 @@
 package org.lanyard.util
 
-object Factorial extends ( Int => Double ) {
+/** The factorial function. */
+object Factorial extends PartialFunction[Int,Double] {
 
   /** Precompute all factorials */
   val values = {
@@ -14,13 +15,20 @@ object Factorial extends ( Int => Double ) {
     tmp
   }
 
-  /** Returns the factorial
+  /** Checks if the factorial is defined at a given value.
     * 
-    * @param n Integer value 
-    * @return factorial of n
+    * @param value value to be checked
+    * @return true if value is in [0, 170], false otherwise
     */
-  def apply( n: Int ): Double = {
-    assert( 0 <= n && n <= 170, "Factorial out of range. Argument needs to be in [0, 170]. Found value: n = " + n )
-    values( n )
+  override def isDefinedAt( value: Int ): Boolean = 0 <= value && value <= 170
+
+  /** Computes the factorial function a given value.
+    * 
+    * @param value value to compute the factorial for
+    * @return factorial of value
+    */
+  def apply( value: Int ): Double = {
+    require( isDefinedAt(value) , "Argument of Factorial is out of range. It needs to be in [0, 170]. Found value = " + value )
+    values( value )
   }
 }

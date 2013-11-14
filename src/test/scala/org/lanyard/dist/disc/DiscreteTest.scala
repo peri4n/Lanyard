@@ -22,8 +22,7 @@ class DiscreteTest extends FunSpec with ShouldMatchers with GeneratorDrivenPrope
       val dna = Discrete( A, C, G, T )
 
       val seq = Array(A, C, G, A, T, A, T, G)
-      val hashes = dna.markovHashes( seq, 0 )
-      println( hashes.mkString(" ") )
+
     }
   }
 }

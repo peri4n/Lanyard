@@ -1,14 +1,12 @@
 package org.lanyard.dist.cont
 
-import java.io.PrintWriter
-import org.lanyard.desc.Moments
 import org.lanyard.random.KISS
 import org.scalacheck.Gen
 import org.scalatest.FunSpec
-import org.scalatest.matchers.ShouldMatchers
+import org.scalatest.Matchers
 import org.scalatest.prop.GeneratorDrivenPropertyChecks
 
-class GammaTest extends FunSpec with ShouldMatchers with GeneratorDrivenPropertyChecks {
+class GammaTest extends FunSpec with Matchers with GeneratorDrivenPropertyChecks {
 
   describe("The gamma distribution") {
 

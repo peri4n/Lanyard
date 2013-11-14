@@ -1,7 +1,7 @@
 package org.lanyard.dist.cont
 
 import org.lanyard.random.KISS
-import org.lanyard.desc.Moments
+import org.lanyard.desc.OnlineMoments
 import org.scalacheck.Gen
 import org.scalatest.FunSpec
 import org.scalatest.matchers.ShouldMatchers
@@ -21,7 +21,7 @@ class NormalDistTest extends FunSpec with ShouldMatchers with GeneratorDrivenPro
         ( seed: Long, mean: Double, variance: Double ) => {
           val rng = KISS(seed)
           val samples = Gaussian(mean,variance).randoms(rng).take(DrawsPerTest)
-          val mom = samples.foldLeft(Moments()){ (acc, x) => acc :+ x }
+          val mom = samples.foldLeft(OnlineMoments()){ (acc, x) => acc :+ x }
           mom.count should be(DrawsPerTest)
 //          mom.average should be(mean plusOrMinus 0.2)
 //          mom.variance should be(variance plusOrMinus 1.5)

@@ -1,6 +1,7 @@
 package org.lanyard.util
 
-object LogGamma extends ( Double => Double ) {
+/** The logarithm of the gamma function. */
+object LogGamma extends PartialFunction[Double, Double] {
 
   private val coeficients = Array(
     57.1562356658629235, -59.5979603554754912, 14.1360979747417471,
@@ -9,9 +10,21 @@ object LogGamma extends ( Double => Double ) {
     .217439618115212643e-3, -.164318106536763890e-3, .844182239838527433e-4,
     -.261908384015814087e-4, .368991826595316234e-5 )
 
+  /** Checks if the log gamma is defined at a given value.
+    * 
+    * @param value value to be checked
+    * @return true if value is strictly positive, false otherwise
+    */
+  override def isDefinedAt( value: Double ): Boolean = value > 0
+
+  /** Computes the logarthmic gamma function at a certain value.
+    * 
+    * @param value value to compute the log gamma for
+    * @return log gamma of value
+    */
   def apply( value: Double ): Double = {
 
-    require( value > 0, "Argument of LogGamma needs to be strictly positive. Found value: " + value )
+    require( isDefinedAt(value) , "Argument of LogGamma needs to be strictly positive. Found value: " + value )
 
     var y = value
     var tmp = value + 5.24218750000000000

@@ -1,46 +1,48 @@
 package org.lanyard.desc
 
-case class Moments( moment0: Long = 0, moment1: Double = 0, moment2: Double = 0, moment3: Double = 0, moment4: Double = 0) {
+import scala.collection.immutable
 
-  def :+ (value: Double): Moments = {
-    val n1 = moment0 + 1
-    val n2 = moment0 * moment0
-    val delta = ( moment1 - value ) / n1
-    val d2 = delta * delta
-    val d3 = d2 * delta
-    val r1 = moment0.toDouble / n1
-    new Moments(
-      n1,
-      moment1 - delta,
-      (moment2 + n1 * d2) * r1,
-      (moment3 + (3 * delta * moment2 + (1 - n2) * d3)) * r1,
-      (moment4 * (4 * delta * moment3 + 6 * d2 * moment2 + (1 + moment0 * n2) * d2 * d2)) * r1)
-  }
+object Moments {
 
-  def count: Long = moment0
+  import math._
 
-  def average: Option[Double] = moment0 match {
-    case 0 => None 
-    case _ => Some(moment1)
-  }
+  /** Computes the first four moments. 
+    * 
+    * It uses the two-pass algorithm from ''Bevington, P.R. and Robinson, D.K. 2002. 
+    * Data Reduction and Error Analysis for the Physical Sciences. 3rd edition. McGraw-Hill. Chapter 1''
+    * 
+    * @param values sequence of values
+    * @return A five tuple of (length, mean, variance, skewness, kurtosis)
+    */
+  def apply( values: Seq[Double] ): (Int, Option[Double], Option[Double], Option[Double], Option[Double]) = 
+    if( values.isEmpty )
+      (0, None, None, None, None )
+    else {
 
-  def variance: Option[Double] = moment0 match {
-    case 0 => None
-    case 1 => None
-    case _ => Some((moment2 * moment0) / (moment0 - 1))
-  }
+      val (length, sum) = values.foldLeft( (0, 0.0) ) { (acc, x) => ( acc._1 + 1, acc._2 + x ) }
+      val mean = sum / length
 
-  def skewness: Option[Double] = moment0 match {
-    case x if x < 3 => None 
-    case _ => Some(moment3 * moment0 * moment0 / (math.sqrt(variance.get) * variance.get * ( moment0 - 1) * (moment0 - 2)))
-  }
-
-  def kurtosis: Option[Double] = moment0 match {
-    case x if x < 4 => None
-    case _ => {
-      val kFact = (moment0 - 2) * (moment0 - 3)
-      val n1 = moment0 - 1
-      Some( (moment4 * moment0 * moment0 * (moment0 + 1) / (variance.get * variance.get * n1) - n1 * n1 * 3) / kFact)
+      var (p, s) = (0.0, 0.0)
+      var (adev, ep, vari, skew, kurt) = (0.0, 0.0, 0.0, 0.0, 0.0 ) 
+      values.foreach{ x =>
+        s = x - mean
+        p = s * s
+        adev += abs( s )
+        ep += s
+        vari += p
+        p *= s
+        skew += p
+        p *= s
+        kurt += p
+      }
+      
+      adev /= length
+      vari = ( vari - ep * ep / length) / ( length - 1)
+      ( length,
+        if( length != 0 ) Some( mean ) else None,
+        if( length > 1 ) Some( vari ) else None,
+        if( vari != 0 ) Some( skew / (length * vari * sqrt( vari )) ) else None,
+        if( vari != 0 ) Some( kurt / (length * vari * vari) - 3 ) else None)
     }
-  }
+
 }

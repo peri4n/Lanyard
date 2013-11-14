@@ -22,7 +22,7 @@ class Student( val dgf: Double, val mu: Double = 0.0, val sigma: Double = 1.0 ) 
 
   def apply( value: Double): Double = exp( logLike( value ) )
 
-  def logLike( value: Double): Double = constantLogTerm - 
+  override def logLike( value: Double): Double = constantLogTerm - 
     log( sqrt( Math.PI  * dgf ) * sigma ) -
     (( dgf + 1 ) / 2 ) * log( 1.0 +  ((value - dgf) / sigma) * ((value - dgf) / sigma) / dgf)
 
