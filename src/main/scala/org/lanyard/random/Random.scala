@@ -3,6 +3,7 @@ package org.lanyard.random
 import scala.annotation.tailrec
 
 trait Random[A] {
+  outer =>
 
   def random( source: RNG ): (A, RNG)
 
@@ -11,24 +12,33 @@ trait Random[A] {
     draw #:: randoms(rng)
   }
 
+  def map[B]( f: A => B ): Random[B] = new Random[B] {
+    def random( source: RNG ): (B, RNG) = {
+      val (draw, rng) = outer.random( source )
+      ( f( draw ), rng )
+    }
+  }
+
+  def flatMap[B]( f: A => Random[B] ): Random[B] = new Random[B] {
+    def random( source: RNG ): (B, RNG) = {
+      val (draw, rng) = outer.random( source )
+      val rnd = f( draw )
+      rnd.random( rng )
+    }
+  }
 }
 
 object Random {
 
-  implicit val longRandom = new Random[Long] {
-    def random( source: RNG): (Long, RNG) = source.nextLong
+  def integer: Random[Int] = new Random[Int] {
+    def random( source: RNG) = source.nextInt
   }
 
-  implicit val intRandom = new Random[Int] {
-    def random( source: RNG): (Int, RNG) = source.nextInt
-  }
+  def boolean: Random[Boolean] = for( x <- integer ) yield x > 0
 
-  implicit val doubleRandom = new Random[Double] {
-    def random( source: RNG): (Double, RNG) = source.nextDouble
-  }
-
-  implicit val boolRandom = new Random[Boolean] {
-    def random( source: RNG): (Boolean, RNG) = source.nextBoolean
-  }
+  def pair[A, B]( r1: Random[A], r2: Random[B] ): Random[(A, B)] = for {
+    first <- r1
+    second <- r2
+  } yield (first, second)
 
 }

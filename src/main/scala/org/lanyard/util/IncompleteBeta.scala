@@ -24,6 +24,7 @@ case class IncompleteBeta( val a: Double, val b: Double ) extends PartialFunctio
     } else if( a > 3000 && b > 3000 ) {
       approximate( value )
     } else {
+      continuedFraction( value )
     }
   }
 
