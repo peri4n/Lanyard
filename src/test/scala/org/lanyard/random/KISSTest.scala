@@ -3,10 +3,10 @@ package org.lanyard.random
 import java.io.PrintWriter
 import org.scalacheck.Gen
 import org.scalatest.FunSpec
-import org.scalatest.matchers.ShouldMatchers
+import org.scalatest.Matchers
 import org.scalatest.prop.GeneratorDrivenPropertyChecks
 
-class KISSTest extends FunSpec with ShouldMatchers with GeneratorDrivenPropertyChecks {
+class KISSTest extends FunSpec with Matchers with GeneratorDrivenPropertyChecks {
 
   describe("The KISS RNG") {
 
@@ -18,19 +18,20 @@ class KISSTest extends FunSpec with ShouldMatchers with GeneratorDrivenPropertyC
       draw should be(1666297717051644203L)
     }
 
-    it("should draw double in the range of (0,1).") {
-      forAll(( Gen.choose(Long.MinValue, Long.MaxValue), "seed")) { (seed: Long) =>
+    it("should draw doubles in the range of (0,1).") {
+      forAll(( Gen.posNum[Long], "seed")) { (seed: Long) =>
         val rng = KISS(seed)
-        val samples = RNG.toRandom[Double].randoms(rng).take(DrawsPerTest)
-        samples.forall( s => 0 < s && s < 1) should be(true)
+        val samples = Random.double.randoms(rng).take(DrawsPerTest)
+        samples.foreach{ _ should be > 0.0 }
+        samples.foreach{ _ should be < 1.0 }
       }
     }
 
     it("should produce an average of 0.5") {
-      forAll(( Gen.choose(Long.MinValue, Long.MaxValue), "seed")) { (seed: Long) =>
+      forAll(( Gen.posNum[Long], "seed")) { (seed: Long) =>
         val rng = KISS(seed)
-        val samples = RNG.toRandom[Double].randoms(rng).take(DrawsPerTest)
-          (samples.sum / DrawsPerTest) should be( 0.5 plusOrMinus 0.005)
+        val samples = Random.double.randoms(rng).take(DrawsPerTest)
+          (samples.sum / DrawsPerTest) should be( 0.5 +- 1E-2)
       }
     }
   }

@@ -1,9 +1,13 @@
 package org.lanyard.desc
 
+import java.lang.ArithmeticException
+
 import org.scalacheck.Gen
 import org.scalatest.FunSpec
 import org.scalatest.Matchers
 import org.scalatest.prop.GeneratorDrivenPropertyChecks
+
+import scala.util._
 
 /** Tests for the online moments */
 class OnlineMomentsTest extends FunSpec with Matchers with GeneratorDrivenPropertyChecks {
@@ -23,7 +27,7 @@ class OnlineMomentsTest extends FunSpec with Matchers with GeneratorDrivenProper
     /** Auxillary function used in the computation of the moments */ 
     def mom( seq: Seq[Double], p: Int, around: Double) = seq.map( x => math.pow( x - around, p) ).sum / seq.length
 
-    it("The mean") {
+    it("The computation of the mean") {
 
       /** Accuracy to expect from the mean */
       val MeanAccuracy = 1E-12
@@ -31,20 +35,20 @@ class OnlineMomentsTest extends FunSpec with Matchers with GeneratorDrivenProper
       /** Computes the mean in a standard fashion */
       def mean( seq: Seq[Double]): Double = seq.sum / seq.length
 
-      info( "is None for an empty array." )
+      info( "results in a failure for an empty array." )
       val avg = Array.empty[Double].foldLeft( OnlineMoments() ) { (acc, x ) => acc :+ x }.mean
-      avg should be( None )
+      avg.isFailure should be( true )
 
       info( "retains a sufficient accuracy." )
       forAll( (Gen.containerOfN[Array, Double]( 100, Gen.choose(ElemLowerLimit, ElemUpperLimit)), "sequence") ) {
         seq: Array[Double] => {
           val avg = seq.foldLeft( OnlineMoments() ) { (acc,x) => acc :+ x }.mean
-          avg.get  should equal ( mean( seq ) +- MeanAccuracy )
+          avg.get should equal ( mean( seq ) +- MeanAccuracy )
         }
       }
     }
 
-    it("The variance") {
+    it("The computation of the variance") {
 
       /** Accuracy to expect from the variance */
       val VarianceAccuracy = 1E-9
@@ -55,14 +59,14 @@ class OnlineMomentsTest extends FunSpec with Matchers with GeneratorDrivenProper
         seq.map( x => math.pow( x - avg, 2) ).sum / (seq.length - 1)
       }
 
-      info( "is None for an empty or singleton array." )
+      info( "results in a failure for an empty or singleton array." )
       val va = Array.empty[Double].foldLeft( OnlineMoments() ) { (acc, x ) => acc :+ x }.variance
-      va should be( None )
+      va.isFailure should be( true )
 
       forAll { 
         elem: Double => {
           val va = Array( elem ).foldLeft( OnlineMoments() ) { (acc, x ) => acc :+ x }.variance
-          va should be( None )
+          va.isFailure should be( true )
         }
       }
 
@@ -75,7 +79,7 @@ class OnlineMomentsTest extends FunSpec with Matchers with GeneratorDrivenProper
       }
     }
 
-    it("The skewness") {
+    it("The computation of the skewness") {
 
       /** Accuracy to expect from the skewness */
       val SkewnessAccuracy = 1E-2
@@ -88,14 +92,14 @@ class OnlineMomentsTest extends FunSpec with Matchers with GeneratorDrivenProper
         num / denom
       }
 
-      info( "is None for arrays smaller than three elements." )
+      info( "results in a failure for arrays with less than three elements." )
       val skew = Array.empty[Double].foldLeft( OnlineMoments() ) { (acc, x ) => acc :+ x }.skewness
-      skew should be( None )
+      skew.isFailure should be( true )
 
       forAll { 
         pair: (Double, Double) => {
           val skew = Array(pair._1, pair._2).foldLeft( OnlineMoments() ) { (acc, x ) => acc :+ x }.skewness
-          skew should equal( None )
+          skew.isFailure should be( true )
         }
       }
 
@@ -108,10 +112,10 @@ class OnlineMomentsTest extends FunSpec with Matchers with GeneratorDrivenProper
       }
     }
 
-    it("The kurtosis") {
+    it("The computaion of the kurtosis") {
 
       /** Accuracy to expect from the kurtosis */
-      val KurtosisAccuracy = 1E-1
+      val KurtosisAccuracy = 3E-2
 
       /** Computes the kurtosis in a standard fashion */
       def kurtosis( seq: Seq[Double]): Double = {
@@ -121,14 +125,14 @@ class OnlineMomentsTest extends FunSpec with Matchers with GeneratorDrivenProper
         num / denom - 3
       }
 
-      info( "is None for arrays smaller than four elements." )
+      info( "results in a failure for arrays with less than four elements." )
       val kurt = Array.empty[Double].foldLeft( OnlineMoments() ) { (acc, x ) => acc :+ x }.kurtosis
-      kurt should be( None )
+      kurt.isFailure should be( true )
 
       forAll { 
         triple: (Double, Double, Double) => {
           val kurt = Array(triple._1, triple._2, triple._3 ).foldLeft( OnlineMoments() ) { (acc, x ) => acc :+ x }.kurtosis
-          kurt should equal( None )
+          kurt.isFailure should equal( true )
         }
       }
 

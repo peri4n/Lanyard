@@ -4,12 +4,26 @@ import org.lanyard.dist.Distribution
 import org.lanyard.dist.disc.Discrete
 import org.lanyard.random.RNG
 
-class InMarkov[A]()( implicit disc: Discrete[A] ) extends Distribution[Array[A]] {
+/** Inhomogeneous discrete markov models. */
+class InMarkov[A]( length: Int, order: Int, probs: Array[Array[Double]] )( implicit disc: Discrete[A] ) extends Markov[A](length, order, probs) {
 
-  import disc._
+  import math._
 
-  def apply( value: Array[A] ): Double = 0.0
+  /** Cummulative offsets */
+  private val probOffsets: Array[Int] = Array.tabulate( length )( i => 
+    if( i <= order ) 
+      pow(disc.size, i).toInt 
+    else 
+      pow( disc.size, order).toInt 
+  ).scanLeft(0)(_ + _)
 
-  def random( source: RNG ): (Array[A], RNG) = ???
+  def offset( position: Int ): Int = probOffsets( position )
+
+}
+
+object InMarkov {
+
+  def apply[A]( length: Int, order: Int, probs: Array[Array[Double]] )( implicit disc: Discrete[A] ): InMarkov[A] =
+    new InMarkov[A]( length, order, probs.map( _.clone ) )
 
 }

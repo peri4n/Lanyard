@@ -3,7 +3,6 @@ package org.lanyard.dist.cont
 import org.lanyard._
 import org.lanyard.dist.Distribution
 import org.lanyard.random.RNG
-import org.lanyard.util.LogGamma
 
 /** The dirichlet distribution is a continuous probability distribution. 
   * 
@@ -13,12 +12,9 @@ import org.lanyard.util.LogGamma
 class Dirichlet private( private val alpha: Array[Double] ) extends Distribution[Array[Double]] {
 
   import math._
+  import org.lanyard.util.LogGamma
 
   require( alpha.forall( _ > 0.0 ), "Dirichlet distribution parameter alpha has to have strictly positive elements. Found value: " + alpha.mkString(" ") )
-
-  /*************************************
-   *        START OF VALUES            *
-   *************************************/
 
   /** Dimension of the simplex for which the dirichlet distribution is defined. */
   val dimension = alpha.length
@@ -35,10 +31,6 @@ class Dirichlet private( private val alpha: Array[Double] ) extends Distribution
     * @return true if values sums to one, false otherwise
     */
   private def isInDomain( values: Array[Double] ): Boolean = math.abs(values.sum - 1) < 1E-10 && values.length == alpha.length
-
-  /*************************************
-   *        START OF FUNCTIONS         *
-   *************************************/
 
   /** Computes the mean. */
   def mean: Array[Double] = {
@@ -111,7 +103,7 @@ object Dirichlet {
     * @param alpha alpha parameter of the dirichlet distribution
     * @return dirichlet distribution with given alpha
     */
-  def apply( alpha: Array[Double] ): Dirichlet = new Dirichlet( alpha.clone )
+  def apply( alpha: Seq[Double] ): Dirichlet = new Dirichlet( alpha.toArray )
 
 }
 

@@ -1,12 +1,12 @@
 package org.lanyard.dist.disc
 
-import org.lanyard._
-import org.lanyard.dist.Distribution
-import org.lanyard.random.RNG
-import org.lanyard.util.LogGamma
-import scala.annotation.tailrec
 
-case class Binomial ( val n: Int, val p: Double ) extends Distribution[Int] {
+import org.lanyard.dist.Distribution
+import org.lanyard.inference.ML
+
+
+
+case class Binomial ( val n: Int, val p: Double ) extends Distribution[Int] with ML[Int, Binomial] {
 
   import math._
   import Binomial._
@@ -26,6 +26,9 @@ case class Binomial ( val n: Int, val p: Double ) extends Distribution[Int] {
   private val m = floor(( n + 1) * prob ).toInt
   private val nr = (r * ( n + 1 ) )
 
+  def train( samples: List[Int] ) : Binomial = ???
+
+  import org.lanyard._
 
   def apply( value: Int ): LogLike = 
     if( 0 <= value && value <= n ) {
@@ -34,11 +37,14 @@ case class Binomial ( val n: Int, val p: Double ) extends Distribution[Int] {
       Double.NegativeInfinity
     }
 
+  import org.lanyard.random.RNG
+
   def random( source: RNG): (Int, RNG) = {
+    
     /** In this case variates are drawn using the BINV algorithm.
       * It is a fall back for small means and is only used because
-      * the BTRD algorithm is no sufficient approximation in this case. */
-
+      * the BTRD algorithm is no sufficient approximation in this case. 
+      */
     def invert: (Int, RNG) = {
       val q = 1 - p
       val s = p / q
@@ -55,9 +61,18 @@ case class Binomial ( val n: Int, val p: Double ) extends Distribution[Int] {
       ( x, nextRNG)
     }
 
+    import scala.annotation.tailrec
+
     /** This is the BTRD algorithm */
-    @tailrec
-    def btrd( rng: RNG): (Int, RNG) = {
+    @tailrec def btrd( rng: RNG): (Int, RNG) = {
+
+      def correction( k: Int ): Double =
+        if( k < 10 ) {
+          table(k)
+        } else {
+          val kPlus1Sq = 1.0 / ( k + 1 )
+          ( 1.0 / 12 - ( 1.0 /360 - 1.0/1260 * kPlus1Sq * kPlus1Sq ) * kPlus1Sq * kPlus1Sq ) * kPlus1Sq
+        }
 
       def symmetricK( k: Int ): Int = if( p == prob ) k else n - k
 
@@ -168,13 +183,5 @@ object Binomial {
     0.01041126526197209,
     0.009255462182712733,
     0.008330563433362871)
-
-  private def correction( k: Int ): Double = 
-    if( k < 10 ) {
-      table(k)
-    } else {
-      val kPlus1Sq = 1.0 / ( k + 1 )
-      ( 1.0 / 12 - ( 1.0 /360 - 1.0/1260 * kPlus1Sq * kPlus1Sq ) * kPlus1Sq * kPlus1Sq ) * kPlus1Sq
-    }
 
 }

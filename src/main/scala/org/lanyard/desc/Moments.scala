@@ -2,6 +2,7 @@ package org.lanyard.desc
 
 import scala.collection.immutable
 
+/** Utility object to store the function that computes the moments. */
 object Moments {
 
   import math._
@@ -19,12 +20,12 @@ object Moments {
       (0, None, None, None, None )
     else {
 
-      val (length, sum) = values.foldLeft( (0, 0.0) ) { (acc, x) => ( acc._1 + 1, acc._2 + x ) }
+      val (length, sum) = values.foldLeft( (0, 0.0) ) { (acc, x) => ( acc._1 + 1, acc._2 + x ) } // first pass
       val mean = sum / length
 
       var (p, s) = (0.0, 0.0)
       var (adev, ep, vari, skew, kurt) = (0.0, 0.0, 0.0, 0.0, 0.0 ) 
-      values.foreach{ x =>
+      values.foreach{ x => // second pass
         s = x - mean
         p = s * s
         adev += abs( s )

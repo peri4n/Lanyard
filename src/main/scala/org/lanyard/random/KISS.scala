@@ -9,7 +9,7 @@ class KISS(
   val z: Long = 1066149217761810L,
   val c: Long = 123456123456123456L ) extends RNG {
 
-  /** Computes a step of the RNG.
+  /** Draws a random `Long`.
     * 
     * @return Pair of a random `Long` and an updated KISS generator.
     */
@@ -21,10 +21,10 @@ class KISS(
   }
 
   /** Extracts the sign bit of a `Long`. */
-  private def signBit( x: Long ): Long = x >>> 63
+  @inline private def signBit( x: Long ): Long = x >>> 63
 
   /** Computes a X-or-shift step. */
-  private def xsh( y: Long ): Long = {
+  @inline private def xsh( y: Long ): Long = {
     var newY = y ^ ( y << 13 )
     newY ^= ( newY >>> 17 )
     newY ^= ( newY << 43 )
@@ -34,10 +34,10 @@ class KISS(
   /** Computes a [[http://en.wikipedia.org/wiki/Linear_congruential_generator Linear congruential generator]]
     * step.
     */
-  private def cng( z: Long ): Long = z * 6906969069L + 1234567L
+  @inline private def cng( z: Long ): Long = z * 6906969069L + 1234567L
 
   /** Computes a [[http://en.wikipedia.org/wiki/Multiply-with-carry Multiply-with-Carry]] step. */
-  private def mwc( x: Long, c: Long ): ( Long, Long ) = {
+  @inline private def mwc( x: Long, c: Long ): ( Long, Long ) = {
     val t = ( x << 58 ) + c
     if ( signBit( x ) == signBit( t ) ) {
       ( x + t, ( x >>> 6 ) + signBit( x ) )

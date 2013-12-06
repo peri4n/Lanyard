@@ -14,6 +14,8 @@ trait Distribution[A] extends Measure[A] with Random[A] {
   /** Type of the parameters of the model */
   type Parameter 
 
+  type Domain <: A
+
 }
 
 

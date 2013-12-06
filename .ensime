@@ -40,6 +40,13 @@
       )
       :target "/home/fabian/code/Lanyard/target/scala-2.10/classes"
       :test-target "/home/fabian/code/Lanyard/target/scala-2.10/test-classes"
-    )
+      :formatting-prefs ( 
+			 :alignParameters t 
+					  :preserveSpaceBeforeArguments t 
+					  :alignSingleLineCaseStatements t 
+					  :spaceInsideParentheses t
+					  :rewriteArrowSymbols t
+      )
+      )
   )
 )
