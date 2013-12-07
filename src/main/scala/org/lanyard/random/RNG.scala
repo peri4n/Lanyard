@@ -31,7 +31,7 @@ trait RNG {
     val (l, rng) = nextLong
     // 9.223372036854776E18 == Long.MIN_VALUE.toDouble
     // 5.42101086242752217E-20 == 1 / ( Long.MAX_VALUE.toDouble - Long.MIN_VALUE.toDouble);
-    (  (l + 9.223372036854776E18) / 5.42101086242752217E-20, rng)
+    (  (l + 9.223372036854776E18) * 5.42101086242752217E-20, rng)
   }
 
   /** Computes a random bit.

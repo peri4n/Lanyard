@@ -74,7 +74,6 @@ class Gamma private (val shape: Double, val scale: Double, private val shifted: 
       val v = 1.0 + a2 * x
       if (v <= 0.0) useGaussian(rng) else (x, v, rng)
     }
-
     var (x, v, rng1) = useGaussian(source)
     v = v * v * v
     val (u, rng2) = rng1.nextDouble
@@ -89,6 +88,9 @@ class Gamma private (val shape: Double, val scale: Double, private val shifted: 
       }
     }
   }
+
+  /** Converts the object to a string. */
+  override def toString: String = s"Gamma( shape = ${shape}, scale = ${scale} )"
 }
 
 object Gamma {

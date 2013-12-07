@@ -45,6 +45,9 @@ class KISS(
       ( x + t, ( x >>> 6 ) + 1L - signBit( x + t ) )
     }
   }
+
+  /** Converts to object to a string. */
+  override def toString: String = s"KISS( x = ${x}, y = ${y}, z = ${z}, c = ${c} )"
 }
 
 object KISS {

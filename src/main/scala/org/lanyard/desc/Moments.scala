@@ -1,11 +1,12 @@
 package org.lanyard.desc
 
-import scala.collection.immutable
-
 /** Utility object to store the function that computes the moments. */
 object Moments {
 
   import math._
+  import scala.util._
+
+  private val fail = Failure( new ArithmeticException )
 
   /** Computes the first four moments. 
     * 
@@ -15,9 +16,9 @@ object Moments {
     * @param values sequence of values
     * @return A five tuple of (length, mean, variance, skewness, kurtosis)
     */
-  def apply( values: Seq[Double] ): (Int, Option[Double], Option[Double], Option[Double], Option[Double]) = 
+  def apply( values: Seq[Double] ): (Int, Try[Double], Try[Double], Try[Double], Try[Double]) = 
     if( values.isEmpty )
-      (0, None, None, None, None )
+      (0, fail, fail, fail, fail )
     else {
 
       val (length, sum) = values.foldLeft( (0, 0.0) ) { (acc, x) => ( acc._1 + 1, acc._2 + x ) } // first pass
@@ -40,10 +41,10 @@ object Moments {
       adev /= length
       vari = ( vari - ep * ep / length) / ( length - 1)
       ( length,
-        if( length != 0 ) Some( mean ) else None,
-        if( length > 1 ) Some( vari ) else None,
-        if( vari != 0 ) Some( skew / (length * vari * sqrt( vari )) ) else None,
-        if( vari != 0 ) Some( kurt / (length * vari * vari) - 3 ) else None)
+        if( length != 0 ) Success( mean ) else fail,
+        if( length > 1 ) Success( vari ) else fail,
+        if( vari != 0 ) Success( skew / (length * vari * sqrt( vari )) ) else fail,
+        if( vari != 0 ) Success( kurt / (length * vari * vari) - 3 ) else fail)
     }
 
 }

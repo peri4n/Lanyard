@@ -45,7 +45,8 @@
 					  :preserveSpaceBeforeArguments t 
 					  :alignSingleLineCaseStatements t 
 					  :spaceInsideParentheses t
-					  :rewriteArrowSymbols t
+					  :multilineScaladocCommentsStartOnFirstLine t
+					  :preserveSpaceBeforeArguments t
       )
       )
   )

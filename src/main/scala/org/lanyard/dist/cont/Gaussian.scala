@@ -16,12 +16,14 @@ import scala.annotation.tailrec
  */
 case class Gaussian(mean: Double = 0, variance: Double = 1) extends Distribution[Double] {
 
+  import math._
+
   require(variance > 0, "Normal distribution parameter variance needs to be strictly positive. Found value: " + variance)
 
   type Parameter = (Double, Double)
 
   /** Computes the standard derivation. */
-  def stdDeviation = math.sqrt(variance)
+  def stdDeviation = sqrt(variance)
 
   /** Computes the skewness. */
   def skewness = 0.0
@@ -35,7 +37,7 @@ case class Gaussian(mean: Double = 0, variance: Double = 1) extends Distribution
    * @param value value to compute the pdf for
    * @return pdf of value
    */
-  def apply(value: Double): Double = math.exp(logLike(value))
+  def apply(value: Double): Double = exp(logLike(value))
 
   /** Computes the logarithm of the probability density function. */
   override def logLike(value: Double): Double = {
@@ -55,9 +57,9 @@ case class Gaussian(mean: Double = 0, variance: Double = 1) extends Distribution
     val (draw2, rng2) = rng1.nextDouble
     val v = 1.7156 * (draw2 - 0.5)
     val x = draw1 - 0.449871
-    val y = math.abs(v) + 0.386595
+    val y = abs(v) + 0.386595
     val q = (x * x) + y * (0.19600 * y - 0.25472 * x)
-    if (q > 0.27597 && (q > 0.27846 || (v * v) > -4.0 * math.log(draw1) * draw1 * draw1))
+    if (q > 0.27597 && (q > 0.27846 || (v * v) > -4.0 * log(draw1) * draw1 * draw1))
       random(rng2)
     else
       (mean + stdDeviation * v / draw1, rng2)

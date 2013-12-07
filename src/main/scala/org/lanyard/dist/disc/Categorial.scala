@@ -3,21 +3,26 @@ package org.lanyard.dist.disc
 import org.lanyard.dist.Distribution
 import org.lanyard.random.RNG
 
-class Categorial[A]( weights: Array[Double] )(implicit disc: Discrete[A]) extends Distribution[A] {
+/** @TODO generalize so that the weights don't have to sum to one. */
+case class Categorial[A]( weights: Seq[Double] )( implicit disc: Discrete[A] ) extends Distribution[A] {
 
   import disc._
 
-  private val cummulative = weights.scanLeft(0.0)( _ + _ ).tail
+  require( weights.length == disc.size, "Categorial distribution parameter weights has to have the same length as the size of the associated discrete alphabet." )
 
-  def apply( value: A): Double = weights( asInt( value ) )
+  private val cummulative = weights.scanLeft( 0.0 )( _ + _ ).toArray
 
-  def random( source: RNG ): (A, RNG) = {
-    val (doub, rng) = source.nextDouble
-    var i = 0
-    while( doub < cummulative(i) ) {
-      i+= 1
+  def apply( value: A ): Double = cummulative( asInt( value ) + 1 ) - cummulative( asInt( value ) )
+
+  def random( source: RNG ): ( A, RNG ) = {
+    val ( doub, rng ) = source.nextDouble
+    var i = 1
+    while ( doub < cummulative( i ) ) {
+      i += 1
     }
-    (fromInt( i ), rng)
+    ( fromInt( i ), rng )
   }
+
+  override def toString: String = "Categorial( weights = (" + weights.scanLeft( 0.0 )( _ - _).tail.mkString(", ") + ") )"
 
 }
