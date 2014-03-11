@@ -3,13 +3,17 @@ package org.lanyard.dist.disc
 import org.lanyard.dist.Distribution
 import org.lanyard.inference.ML
 
-case class Binomial( n: Int, p: Double ) extends Distribution[Int] with ML[Int, Binomial] {
+/** The binomial distribution is a discrete probability distribution of the number of sucesses in a sequence of independent bernoulli trials. */
+case class Binomial( n: Int, p: Double ) extends Distribution[Int]  {
 
   import math._
   import Binomial._
 
-  private val prob = if ( p < 0.5 ) p else ( 1 - p )
+  /** log of the normalization constant */
+  private val normConst = 0
 
+  /** set of variables used for sampling */
+  private val prob = if ( p < 0.5 ) p else ( 1 - p )
   private val npq = n * prob * ( 1 - prob )
   private val sqnpq = sqrt( npq )
   private val c = n * prob + 0.5
@@ -22,8 +26,6 @@ case class Binomial( n: Int, p: Double ) extends Distribution[Int] with ML[Int, 
   private val urvr = 0.86 * vr
   private val m = floor( ( n + 1 ) * prob ).toInt
   private val nr = ( r * ( n + 1 ) )
-
-  def train( samples: List[Int] ): Binomial = ???
 
   import org.lanyard._
 
@@ -167,7 +169,9 @@ case class Binomial( n: Int, p: Double ) extends Distribution[Int] with ML[Int, 
 
 }
 
-object Binomial {
+object Binomial extends ML[Int, Binomial] {
+
+  def train( samples: List[Int]): Binomial = ???
 
   private val table = Array(
     0.08106146679532726,
