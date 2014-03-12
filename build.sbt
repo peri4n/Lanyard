@@ -1,8 +1,12 @@
-name := "Lanyard"
+name := "lanyard"
 
 version := "0.01"
 
-scalaVersion := "2.10.0"
+organization := "org.lanyard"
+
+licenses := Seq("BSD-style -> url("http://www.opensource.org/licenses/bsd-license.php"))
+
+scalaVersion := "2.10.3"
 
 resolvers ++= Seq(
   "Sonatype Releases" at "http://oss.sonatype.org/content/repositories/releases"
