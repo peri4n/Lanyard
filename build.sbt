@@ -4,7 +4,7 @@ version := "0.01"
 
 organization := "org.lanyard"
 
-licenses := Seq("BSD-style -> url("http://www.opensource.org/licenses/bsd-license.php"))
+licenses := Seq("BSD-style" -> url("http://www.opensource.org/licenses/bsd-license.php"))
 
 scalaVersion := "2.10.3"
 
