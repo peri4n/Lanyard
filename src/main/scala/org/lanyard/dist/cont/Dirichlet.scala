@@ -4,7 +4,9 @@ import org.lanyard._
 import org.lanyard.dist.Distribution
 import org.lanyard.random.RNG
 
-/** The dirichlet distribution is a continuous probability distribution. 
+/** The dirichlet distribution is a continuous probability
+  * distribution. It assigns probabilities to vectors in the simplex
+  * of some dimension.
   * 
   * @constructor Creates a dirichlet distribution with the given parameters.
   * @param alpha alpha parameter of the dirichlet distribution
@@ -14,16 +16,17 @@ class Dirichlet private( private val alpha: Array[Double] ) extends Distribution
   import math._
   import org.lanyard.util.LogGamma
 
-  require( alpha.forall( _ > 0.0 ), "Dirichlet distribution parameter alpha has to have strictly positive elements. Found value: " + alpha.mkString(" ") )
+  require( alpha.forall( _ > 0.0 ), 
+    "Dirichlet distribution parameter alpha has to have strictly positive elements. Found value: " + alpha.mkString(" ") )
 
   /** Dimension of the simplex for which the dirichlet distribution is defined. */
   val dimension = alpha.length
 
   /** Gamma distributions needed for sampling */
-  private lazy val gammas = alpha.map( Gamma( _ , 1.0) )
+  private val gammas = alpha.map( Gamma( _ , 1.0) )
 
   /** Log of the constant term of the dirichlet distribution. */
-  private lazy val constantLogTerm = LogGamma( alpha.sum ) - alpha.map( LogGamma ).sum
+  private val constantLogTerm = LogGamma( alpha.sum ) - alpha.map( LogGamma ).sum
 
   /** Checks if an array is in the domain of the dirichlet distribution.
     * 
@@ -43,13 +46,6 @@ class Dirichlet private( private val alpha: Array[Double] ) extends Distribution
     val alphaSum = alpha.sum
     alpha.map( a => ( a * (alphaSum - a)) / ( alphaSum * alphaSum * (alphaSum + 1)))
   }
-
-  /** Computes the probability density function.
-    * 
-    * @param value presumably statistical vector
-    * @return value of the pdf
-    */
-  def apply( value: Array[Double] ): Double = exp( logLike( value ) )
 
   /** Computes the log probability density function.
     * 

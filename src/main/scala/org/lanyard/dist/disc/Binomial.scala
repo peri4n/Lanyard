@@ -2,17 +2,23 @@ package org.lanyard.dist.disc
 
 import org.lanyard.dist.Distribution
 import org.lanyard.inference.ML
+import org.lanyard.util.BinCoef
 
-/** The binomial distribution is a discrete probability distribution of the number of sucesses in a sequence of independent bernoulli trials. */
+/** The Binomial distribution is a discrete probability distribution
+  * of the number of sucesses in a sequence of independent bernoulli
+  * trials. 
+  * 
+  * @constructor Creates a Binomial distribution
+  * @param n number of trials 
+  * @param p probability of success
+  */
 case class Binomial( n: Int, p: Double ) extends Distribution[Int]  {
 
+  import org.lanyard.random.RNG
   import math._
   import Binomial._
 
-  /** log of the normalization constant */
-  private val normConst = 0
-
-  /** set of variables used for sampling */
+  /** Variables used for sampling. Mostly used in BTRD algorithm. */
   private val prob = if ( p < 0.5 ) p else ( 1 - p )
   private val npq = n * prob * ( 1 - prob )
   private val sqnpq = sqrt( npq )
@@ -29,14 +35,18 @@ case class Binomial( n: Int, p: Double ) extends Distribution[Int]  {
 
   import org.lanyard._
 
-  def apply( value: Int ): LogLike =
-    if ( 0 <= value && value <= n ) {
-      0.0
+  /** Computes the probability of a number of successes.
+    * 
+    * @param k number of successes
+    * @return probability of k
+    */
+  override def apply( k: Int ): Double = 
+    if ( 0 <= k && k <= n ) {
+      val normConst = BinCoef(n,k)
+      normConst * pow(p, k) * pow( 1 - p, n - k)
     } else {
-      Double.NegativeInfinity
+      0.0
     }
-
-  import org.lanyard.random.RNG
 
   /** In this case variates are drawn using the BINV algorithm.
    *  It is a fall back for small means and is only used because
@@ -151,7 +161,8 @@ case class Binomial( n: Int, p: Double ) extends Distribution[Int]  {
              *  Final acceptance-rejection test
              */
             val nk = n - k + 1
-            if ( v <= h + ( n + 1 ) * log( nm.toDouble / nk ) + ( k + 0.5 ) * log( nk * r / ( k + 1 ) ) - correction( k ) - correction( n - k ) ) {
+            if ( v <= h + ( n + 1 ) * log( nm.toDouble / nk ) + ( k + 0.5 ) * log( nk * r / ( k + 1 ) ) - 
+              correction( k ) - correction( n - k ) ) {
               ( symmetricK( k ), returnRNG )
             } else {
               btrd( returnRNG )
@@ -162,10 +173,12 @@ case class Binomial( n: Int, p: Double ) extends Distribution[Int]  {
     }
   }
 
+  /** Draws a random value from the distribution. 
+    * 
+    * @param source a random number generator
+    * @return a pair of a random draw and the updated generator 
+    */
   def random( source: RNG ): ( Int, RNG ) = if ( n * p < 11 ) invert( source ) else btrd( source )
-
-  /** Converts the object to a string. */
-  override def toString: String = s"Binomial( n = ${n}, p = ${p} )"
 
 }
 

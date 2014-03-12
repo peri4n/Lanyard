@@ -5,10 +5,11 @@ import org.lanyard.dist.Distribution
 import org.lanyard.random.RNG
 import org.lanyard.util.LogGamma
 
-/** The beta distribution is a continuous probability distribution.
+/** The beta distribution is a continuous probability distribution. It
+  * is defined over the range [0,1] so it distributes other
+  * probabilities.
   * 
   * @constructor Creates a beta distribution with given parameters.
-  * 
   * @param alpha alpha parameter of the beta distribution
   * @param beta beta parameter of the beta distribution
   */
@@ -16,8 +17,8 @@ case class Beta( val alpha: Double, val beta: Double) extends Distribution[Doubl
 
   import math._
 
-  require( alpha > 0, "Beta distribution parameter alpha needs to be stricly positive. Found value: " + alpha)
-  require( beta > 0, "Beta distribution parameter beta needs to be stricly positive. Found value: " + beta)
+  require( alpha > 0, s"Beta distribution parameter alpha needs to be stricly positive. Found value: ${alpha}" )
+  require( beta > 0, s"Beta distribution parameter beta needs to be stricly positive. Found value: ${beta}")
 
   /** Gamma distributions used for sampling */
   private lazy val alphaGamma = Gamma(alpha, 1)
@@ -34,13 +35,6 @@ case class Beta( val alpha: Double, val beta: Double) extends Distribution[Doubl
 
   /** Computes the mode. */
   def mode = (alpha - 1) / ( alpha + beta - 2)
-
-  /** Computes the probability density function.
-    * 
-    * @param value value in [0,1]
-    * @return value of the density
-    */
-  def apply( value: Double ): Double = exp( logLike(value) )
 
   /** Computes the logarithm of the probability density function.
     * 

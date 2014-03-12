@@ -6,18 +6,20 @@ package org.lanyard
   */
 trait Measure[A] extends (A => Double) {
 
+  import math._
+
   /** Assigns an unnormalized score to a value.
     * 
     * @param value Value to assign a score to
     * @return unnormalized measure
     */
-  def apply( value: A): Double
+  def apply( value: A): Double = exp( logLike( value ) )
 
   /** Assigns a log-probability to a value of type A
     * 
     * @param value Value to compute the probability for
     * @return logarithm of the probabilty of the value
     */
-  def logLike(value: A): LogLike = math.log( apply( value ) )
+  def logLike(value: A): LogLike = log( apply( value ) )
 
 }

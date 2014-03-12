@@ -12,20 +12,23 @@ import org.lanyard.util.LogGamma
   * @param mu location parameter
   * @param sigma shape parameter
   */
-class Student( val dgf: Double, val mu: Double = 0.0, val sigma: Double = 1.0 ) extends Distribution[Double] {
+case class Student( dgf: Double, mu: Double = 0.0, sigma: Double = 1.0 ) extends Distribution[Double] {
 
-  require( dgf > 0.0 , "Student distribution parameter dgf needs to be strictly positive. Found value: " + dgf )
+  require( dgf > 0.0 , s"Student distribution parameter dgf needs to be strictly positive. Found value: ${dgf}" )
 
   import math._
 
-  private lazy val constantLogTerm = LogGamma( (dgf + 1) / 2 ) - LogGamma( dgf /2 )
-
-  def apply( value: Double): Double = exp( logLike( value ) )
+  lazy val constantLogTerm = LogGamma( (dgf + 1) / 2 ) - LogGamma( dgf /2 )
 
   override def logLike( value: Double): Double = constantLogTerm - 
     log( sqrt( Math.PI  * dgf ) * sigma ) -
     (( dgf + 1 ) / 2 ) * log( 1.0 +  ((value - dgf) / sigma) * ((value - dgf) / sigma) / dgf)
 
+  /** Draws a random value from this student distribution.
+    * 
+    * @param source a random number generator
+    * @return pair of a random value and the updated generator
+    */
   def random( source: RNG ): (Double, RNG) = {
     val (u1, rng1) = source.nextDouble
     val (u2, rng2) = rng1.nextDouble

@@ -41,14 +41,6 @@ class Gamma private (val shape: Double, val scale: Double, private val shifted: 
   def kutorsis = 6 / shape
 
   /**
-   * Computes the probability density function.
-   *
-   * @param value value to compute the pdf for
-   * @return value of the pdf
-   */
-  def apply(value: Double): Double = exp(logLike(value))
-
-  /**
    * Computes the logarithm of the probability density function.
    *
    * @param value value to compute the log pdf for

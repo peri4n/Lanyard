@@ -31,23 +31,15 @@ case class Gaussian(mean: Double = 0, variance: Double = 1) extends Distribution
   /** Computes the kurtosis. */
   def kurtosis = 0.0
 
-  /**
-   * Computes the probability density function.
-   *
-   * @param value value to compute the pdf for
-   * @return pdf of value
-   */
-  def apply(value: Double): Double = exp(logLike(value))
-
   /** Computes the logarithm of the probability density function. */
   override def logLike(value: Double): Double = {
     0.0
   }
 
-  /**
-   * Draws a random number from this gaussian distribution.
-   * The algorithm used is adopted from
-   *  ''Leva, J. L. 1992. "A Fast Normal Random Number Generator", ACM Transactions on Mathematical Software, vol. 18, no. 4, pp. 449-453''
+  /** Draws a random number from this gaussian distribution.  The
+   * algorithm used is adopted from ''Leva, J. L. 1992. "A Fast Normal
+   * Random Number Generator", ACM Transactions on Mathematical
+   * Software, vol. 18, no. 4, pp. 449-453''
    *
    * @param source source of randomness
    * @return pair of the draw and the updated RNG

@@ -12,7 +12,7 @@ case class Categorial[A]( weights: Seq[Double] )( implicit disc: Discrete[A] ) e
 
   private val cummulative = weights.scanLeft( 0.0 )( _ + _ ).toArray
 
-  def apply( value: A ): Double = cummulative( asInt( value ) + 1 ) - cummulative( asInt( value ) )
+  override def apply( value: A ): Double = cummulative( asInt( value ) + 1 ) - cummulative( asInt( value ) )
 
   def random( source: RNG ): ( A, RNG ) = {
     val ( doub, rng ) = source.nextDouble
@@ -22,7 +22,4 @@ case class Categorial[A]( weights: Seq[Double] )( implicit disc: Discrete[A] ) e
     }
     ( fromInt( i ), rng )
   }
-
-  override def toString: String = "Categorial( weights = (" + weights.scanLeft( 0.0 )( _ - _).tail.mkString(", ") + ") )"
-
 }

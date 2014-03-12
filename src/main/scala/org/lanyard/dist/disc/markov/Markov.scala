@@ -19,14 +19,6 @@ abstract class Markov[A] private[markov] (val length: Int, val order: Int, val p
   def offset(position: Int): Int
 
   /**
-   * Computes the likelihood of the given sequence.
-   *
-   * @param value sequence of discrete elements
-   * @return likelihood of the sequence
-   */
-  def apply(value: List[A]): Double = exp(logLike(value))
-
-  /**
    * Computes the log likelihood of the given sequence.
    *
    * @param sequence sequence of discrete elements
