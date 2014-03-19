@@ -25,19 +25,19 @@ class Gamma private (val shape: Double, val scale: Double, private val shifted: 
   /** Logarithm of the constant term of the gamma distribution */
   private lazy val constantLogTerm = -LogGamma(shape) - shape * log(scale)
 
-  /** Computes the rate parameter. */
-  def rate = 1 / scale
+  /** rate parameter of this distribution */
+  def rate: Double = 1 / scale
 
-  /** Computes the mean. */
+  /** the mean of this distribution */
   def mean = shape * scale
 
-  /** Computes the variance. */
+  /** the variance of this distribution */
   def variance = shape * scale * scale
 
-  /** Computes the skewness. */
+  /** the skewness of this distribution */
   def skewness = 2 / math.sqrt(shape)
 
-  /** Computes the kurtosis. */
+  /** the kurtosis of this distribution */
   def kutorsis = 6 / shape
 
   /**

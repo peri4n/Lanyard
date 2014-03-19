@@ -3,7 +3,6 @@ package org.lanyard.dist.disc.markov
 import org.lanyard._
 import org.lanyard.dist.Distribution
 import org.lanyard.dist.disc.Discrete
-import org.lanyard.inference.ML
 import org.lanyard.util.Util
 import org.lanyard.random.RNG
 import scala.collection.mutable.ListBuffer
@@ -38,11 +37,5 @@ object HoMarkov {
 
   def apply[A](length: Int, order: Int, probabilities: Array[Array[Double]])(implicit disc: Discrete[A]): HoMarkov[A] =
     new HoMarkov[A](length, order, probabilities.map(_.clone))(disc)
-
-  def train[A]( samples: List[List[A]] ) = new HoMarkovTrainer[A].train( samples )
-
-  class HoMarkovTrainer[A] extends ML[List[A], HoMarkov[A]] {
-    def train( samples: List[List[A]] ) = ???
-  }
 
 }

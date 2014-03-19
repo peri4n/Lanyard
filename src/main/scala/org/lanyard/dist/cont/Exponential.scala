@@ -19,10 +19,10 @@ case class Exponential(lambda: Double) extends Distribution[Double] {
   type Parameter = Double
 
   /** Mean of the beta distribution */
-  def mean = 1 / lambda
+  def mean: Double = 1 / lambda
 
   /** Variance of the beta distribution */
-  def variance = 1 / (lambda * lambda)
+  def variance: Double = 1 / (lambda * lambda)
 
   /** Precomputes the logarithm of lambda for faster computation. */
   private val logLambda = log(lambda)
