@@ -5,49 +5,40 @@
 (
   :subprojects (
     (
-      :name "Lanyard"
+      :name "lanyard"
       :module-name "lanyard"
       :depends-on-modules (
       
       )
-      :package "lanyard"
+      :package "org.lanyard"
       :version "0.01"
       :compile-deps (
-        "/home/fabian/.ivy2/cache/org.scala-lang/scala-library/jars/scala-library-2.10.0.jar"
+        "/Users/fabian/.sbt/boot/scala-2.10.3/lib/scala-library.jar"
       )
       :runtime-deps (
-        "/home/fabian/.ivy2/cache/org.scala-lang/scala-library/jars/scala-library-2.10.0.jar"
-        "/home/fabian/code/Lanyard/target/scala-2.10/classes"
-        "/home/fabian/code/Lanyard/target/scala-2.10/classes"
+        "/Users/fabian/.sbt/boot/scala-2.10.3/lib/scala-library.jar"
+        "/Users/fabian/code/Lanyard/target/scala-2.10/classes"
+        "/Users/fabian/code/Lanyard/target/scala-2.10/classes"
       )
       :test-deps (
-        "/home/fabian/.ivy2/cache/org.scalatest/scalatest_2.10/jars/scalatest_2.10-2.0.RC3.jar"
-        "/home/fabian/.ivy2/cache/org.scala-lang/scala-reflect/jars/scala-reflect-2.10.0.jar"
-        "/home/fabian/.ivy2/cache/org.scalacheck/scalacheck_2.10/jars/scalacheck_2.10-1.10.1.jar"
-        "/home/fabian/.ivy2/cache/org.scala-lang/scala-library/jars/scala-library-2.10.1.jar"
-        "/home/fabian/.ivy2/cache/org.scala-tools.testing/test-interface/jars/test-interface-0.5.jar"
-        "/home/fabian/.ivy2/cache/org.scala-lang/scala-actors/jars/scala-actors-2.10.1.jar"
-        "/home/fabian/code/Lanyard/target/scala-2.10/classes"
-        "/home/fabian/code/Lanyard/target/scala-2.10/test-classes"
+        "/Users/fabian/.sbt/boot/scala-2.10.3/lib/scala-library.jar"
+        "/Users/fabian/.ivy2/cache/org.scalatest/scalatest_2.10/jars/scalatest_2.10-2.0.1-SNAP.jar"
+        "/Users/fabian/.ivy2/cache/org.scala-lang/scala-reflect/jars/scala-reflect-2.10.0.jar"
+        "/Users/fabian/.ivy2/cache/org.scalacheck/scalacheck_2.10/jars/scalacheck_2.10-1.11.0.jar"
+        "/Users/fabian/.ivy2/cache/org.scala-sbt/test-interface/jars/test-interface-1.0.jar"
+        "/Users/fabian/code/Lanyard/target/scala-2.10/classes"
+        "/Users/fabian/code/Lanyard/target/scala-2.10/test-classes"
       )
       :source-roots (
-        "/home/fabian/code/Lanyard/src/main/scala"
-        "/home/fabian/code/Lanyard/src/main/java"
-        "/home/fabian/code/Lanyard/target/scala-2.10/src_managed/main"
-        "/home/fabian/code/Lanyard/src/test/scala"
-        "/home/fabian/code/Lanyard/src/test/java"
-        "/home/fabian/code/Lanyard/target/scala-2.10/src_managed/test"
+        "/Users/fabian/code/Lanyard/src/main/scala"
+        "/Users/fabian/code/Lanyard/src/main/java"
+        "/Users/fabian/code/Lanyard/target/scala-2.10/src_managed/main"
+        "/Users/fabian/code/Lanyard/src/test/scala"
+        "/Users/fabian/code/Lanyard/src/test/java"
+        "/Users/fabian/code/Lanyard/target/scala-2.10/src_managed/test"
       )
-      :target "/home/fabian/code/Lanyard/target/scala-2.10/classes"
-      :test-target "/home/fabian/code/Lanyard/target/scala-2.10/test-classes"
-      :formatting-prefs ( 
-			 :alignParameters t 
-					  :preserveSpaceBeforeArguments t 
-					  :alignSingleLineCaseStatements t 
-					  :spaceInsideParentheses t
-					  :multilineScaladocCommentsStartOnFirstLine t
-					  :preserveSpaceBeforeArguments t
-      )
-      )
+      :target "/Users/fabian/code/Lanyard/target/scala-2.10/classes"
+      :test-target "/Users/fabian/code/Lanyard/target/scala-2.10/test-classes"
+    )
   )
 )
