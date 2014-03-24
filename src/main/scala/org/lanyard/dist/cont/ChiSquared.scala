@@ -4,7 +4,7 @@ import org.lanyard.dist.Distribution
 import org.lanyard.random.RNG
 import org.lanyard.util.LogGamma
 
-/** The chi squared distribution is a continuous probability
+/** The Chi-squared distribution is a continuous probability
   * distribution. It distributes the sum of squares of k independent
   * standard normal random variables.
   * 
@@ -23,10 +23,16 @@ case class ChiSquared( dgf: Int ) extends Distribution[Double] {
   /** Used for sampling. */
   private val gamma = Gamma( dgf.toDouble / 2, 0.5)
 
-  /** Computes the logarithm of the probability of a given value. */
+  /** Computes the logarithm of the density. */
   override def logLike( value: Double): Double = constantLogTerm + ( dgf.toDouble / 2 - 1) * log( value ) - ( value / 2 )
 
-  /** Draws a random value from the distribution.
+  /** The mean of this Chi-squared distribution. */
+  def mean: Double = dgf
+
+  /** The variance of this Chi-squared distribution. */
+  def variance: Double = 2 * dgf
+
+  /** Generates a random variate from this Chi-squared distribution.
     * @param source a random number generator
     * @return a pair of a random value and the updated generator
     */

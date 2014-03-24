@@ -2,7 +2,9 @@ package org.lanyard.dist.disc
 
 import org.lanyard.dist.Distribution
 import org.lanyard.random.RNG
+import org.lanyard.util.LogFactorial
 
+/** Poisson distribution */
 case class Poisson(lambda: Double) extends Distribution[Int] {
 
   require(0 < lambda, s"Poisson distribution parameter lambda needs to be strictly positive. Found value: ${lambda}")
@@ -19,10 +21,10 @@ case class Poisson(lambda: Double) extends Distribution[Int] {
   /** Computes the probability of a value under this distribution. */
   override def apply(value: Int): Double = if (value < 0) 0 else 0
 
-  /** the mean of this distribution. */
+  /** The mean of this poisson distribution. */
   def mean: Double = lambda
 
-  /** the variance of this distribution. */
+  /** The variance of this poisson distribution. */
   def variance: Double = lambda
 
   /**
@@ -47,7 +49,7 @@ case class Poisson(lambda: Double) extends Distribution[Int] {
   private def simpleDraw(source: RNG): (Int, RNG) = {
     val L = exp(-lambda)
     var k = 0
-    var p = 1
+    var p = 1.0
     var rng: RNG = source
     do {
       k += 1
@@ -73,10 +75,12 @@ case class Poisson(lambda: Double) extends Distribution[Int] {
     var rng = source
     var us = 0.0
     var k = 0
+    var v = 0.0
     do {
       /** STEP 1 */
       val (u, rng1) = rng.nextDouble
-      val (v, rng2) = rng1.nextDouble
+      val (d, rng2) = rng1.nextDouble
+      v = d
       rng = rng2
       us = 0.5 - abs(u - 0.5)
       k = floor((2 * a / us + b) * (u - 0.5) + lambda + 0.43).toInt

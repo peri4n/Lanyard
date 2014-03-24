@@ -1,7 +1,7 @@
 package org.lanyard.util
 
 /** The incomplete beta function. */
-case class IncompleteBeta( val a: Double, val b: Double ) extends PartialFunction[Double,Double] {
+case class IncBeta( val a: Double, val b: Double ) extends PartialFunction[Double,Double] {
 
   require( a > 0, "Incomplete beta function parameter a needs to be strictly positive. Found value: " + a )
   require( b > 0, "Incomplete beta function parameter b needs to be strictly positive. Found value: " + b )

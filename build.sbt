@@ -1,6 +1,6 @@
 name := "lanyard"
 
-version := "0.01"
+version := "0.0.1"
 
 organization := "org.lanyard"
 

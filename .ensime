@@ -11,34 +11,30 @@
       
       )
       :package "org.lanyard"
-      :version "0.01"
+      :version "0.0.1"
       :compile-deps (
-        "/Users/fabian/.sbt/boot/scala-2.10.3/lib/scala-library.jar"
+        "/home/fabian/.sbt/boot/scala-2.10.3/lib/scala-library.jar"
       )
       :runtime-deps (
-        "/Users/fabian/.sbt/boot/scala-2.10.3/lib/scala-library.jar"
-        "/Users/fabian/code/Lanyard/target/scala-2.10/classes"
-        "/Users/fabian/code/Lanyard/target/scala-2.10/classes"
+        "/home/fabian/.sbt/boot/scala-2.10.3/lib/scala-library.jar"
       )
       :test-deps (
-        "/Users/fabian/.sbt/boot/scala-2.10.3/lib/scala-library.jar"
-        "/Users/fabian/.ivy2/cache/org.scalatest/scalatest_2.10/jars/scalatest_2.10-2.0.1-SNAP.jar"
-        "/Users/fabian/.ivy2/cache/org.scala-lang/scala-reflect/jars/scala-reflect-2.10.0.jar"
-        "/Users/fabian/.ivy2/cache/org.scalacheck/scalacheck_2.10/jars/scalacheck_2.10-1.11.0.jar"
-        "/Users/fabian/.ivy2/cache/org.scala-sbt/test-interface/jars/test-interface-1.0.jar"
-        "/Users/fabian/code/Lanyard/target/scala-2.10/classes"
-        "/Users/fabian/code/Lanyard/target/scala-2.10/test-classes"
+        "/home/fabian/.sbt/boot/scala-2.10.3/lib/scala-library.jar"
+        "/home/fabian/.ivy2/cache/org.scalatest/scalatest_2.10/jars/scalatest_2.10-2.0.1-SNAP.jar"
+        "/home/fabian/.ivy2/cache/org.scala-lang/scala-reflect/jars/scala-reflect-2.10.0.jar"
+        "/home/fabian/.ivy2/cache/org.scalacheck/scalacheck_2.10/jars/scalacheck_2.10-1.11.0.jar"
+        "/home/fabian/.ivy2/cache/org.scala-sbt/test-interface/jars/test-interface-1.0.jar"
       )
       :source-roots (
-        "/Users/fabian/code/Lanyard/src/main/scala"
-        "/Users/fabian/code/Lanyard/src/main/java"
-        "/Users/fabian/code/Lanyard/target/scala-2.10/src_managed/main"
-        "/Users/fabian/code/Lanyard/src/test/scala"
-        "/Users/fabian/code/Lanyard/src/test/java"
-        "/Users/fabian/code/Lanyard/target/scala-2.10/src_managed/test"
+        "/home/fabian/code/Lanyard/src/main/scala"
+        "/home/fabian/code/Lanyard/src/main/java"
+        "/home/fabian/code/Lanyard/target/scala-2.10/src_managed/main"
+        "/home/fabian/code/Lanyard/src/test/scala"
+        "/home/fabian/code/Lanyard/src/test/java"
+        "/home/fabian/code/Lanyard/target/scala-2.10/src_managed/test"
       )
-      :target "/Users/fabian/code/Lanyard/target/scala-2.10/classes"
-      :test-target "/Users/fabian/code/Lanyard/target/scala-2.10/test-classes"
+      :target "/home/fabian/code/Lanyard/target/scala-2.10/classes"
+      :test-target "/home/fabian/code/Lanyard/target/scala-2.10/test-classes"
     )
   )
 )

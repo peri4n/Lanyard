@@ -1,7 +1,7 @@
 package org.lanyard.dist.disc
 
 import org.lanyard.dist.Distribution
-import org.lanyard.util.BinCoef
+import org.lanyard.util.LogFactorial
 
 /**
  * The Binomial distribution is a discrete probability distribution
@@ -41,18 +41,17 @@ case class Binomial(n: Int, p: Double) extends Distribution[Int] {
    * @param k number of successes
    * @return probability of k
    */
-  override def apply(k: Int): Double =
+  override def logLike(k: Int): Double =
     if (0 <= k && k <= n) {
-      val normConst = BinCoef(n, k)
-      normConst * pow(p, k) * pow(1 - p, n - k)
+      LogFactorial(n) - LogFactorial(k) - LogFactorial(n-k) + k * log(p) + (n - k) * log(1 - p)
     } else {
-      0.0
+      Double.NegativeInfinity
     }
 
-  /** The mean of this distribution. */
+  /** The mean of this binomial distribution. */
   def mean: Double = n * p
 
-  /** The variance of this distirbution. */
+  /** The variance of this binomial distirbution. */
   def variance: Double = n * p * (1 - p)
 
   /**
@@ -124,10 +123,7 @@ case class Binomial(n: Int, p: Double) extends Distribution[Int] {
         v *= alpha / (a / (us * us) + b)
         val km = abs(k - m)
         if (km <= 15) {
-          /**
-           * STEP 3.1
-           *  Recursive evaluation of f(k)
-           */
+          /** STEP 3.1 Recursive evaluation of f(k) */
           var f = 1.0
           if (m < k) {
             var i = m
@@ -149,10 +145,7 @@ case class Binomial(n: Int, p: Double) extends Distribution[Int] {
             btrd(returnRNG)
           }
         } else {
-          /**
-           * STEP 3.2
-           *  Squeeze-acceptance or rejection
-           */
+          /** STEP 3.2  Squeeze-acceptance or rejection */
           v = log(v)
           val rho = (km / npq) * (((km / 3 + 0.625) * km + 1.0 / 6) / npq + 0.5)
           val t = -km * km / (2 * npq)
@@ -161,17 +154,11 @@ case class Binomial(n: Int, p: Double) extends Distribution[Int] {
           } else if (v > t + rho) {
             btrd(returnRNG)
           } else {
-            /**
-             * STEP 3.3
-             *  Set-up for step 3.4
-             */
+            /** STEP 3.3 Set-up for step 3.4 */
             val nm = n - m + 1
             val h = (m + 0.5) * log((m + 1) / (r * nm)) + correction(m) + correction(n - m)
 
-            /**
-             * STEP 3.4
-             *  Final acceptance-rejection test
-             */
+            /** STEP 3.4 Final acceptance-rejection test */
             val nk = n - k + 1
             if (v <= h + (n + 1) * log(nm.toDouble / nk) + (k + 0.5) * log(nk * r / (k + 1)) -
               correction(k) - correction(n - k)) {
