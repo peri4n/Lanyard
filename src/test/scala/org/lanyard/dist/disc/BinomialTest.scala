@@ -12,7 +12,7 @@ class BinomialTest extends FunSpec with Matchers with GeneratorDrivenPropertyChe
 
   describe("The binomial distribution") {
 
-    it("samples should be positive and smaller than n.") {
+    it("samples should be positive and smaller or equal than n.") {
       forAll( kiss, binomials ) { ( rng: KISS, binomial: Binomial ) =>
         binomial.randoms(rng).take(10000).foreach{ _ should ( be >= 0 and be <= binomial.n ) }
       }

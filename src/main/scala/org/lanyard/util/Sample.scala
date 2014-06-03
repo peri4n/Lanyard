@@ -26,4 +26,15 @@ object Sample {
     (rec(symbols, weights, 0, draw), nextRNG)
   }
 
+  def fromArray( probabilities: Array[Double], source: RNG ): (Int, RNG) = {
+    var i = 0
+    var (draw, nextRNG) = source.nextDouble
+    while( draw > probabilities(i) && i < probabilities.length ) {
+      println( i , draw )
+      draw -= probabilities(i)
+      i += 1
+    }
+    (i, nextRNG )
+  }
+
 }

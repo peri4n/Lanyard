@@ -29,5 +29,23 @@ class SampleTest extends FunSpec with Matchers {
       draw4 should be (6)
 
     }
+
+    it("can sample from an array") {
+      val rng = KISS( 42 ) // first draw is ~0.93
+        println( "case1")
+      val probabilities1 = Array(1.0, 0.0, 0.0)
+      val (draw1, nextRNG1) = Sample.fromArray( probabilities1, rng )
+      draw1 should be( 0 )
+
+        println( "case2")
+      val probabilities2 = Array(0.9, 0.05)
+      val (draw2, nextRNG2) = Sample.fromArray( probabilities2, rng )
+      draw2 should be( 1 )
+
+        println( "case3")
+      val probabilities3 = Array(0.45, 0.05, 0.5)
+      val (draw3, nextRNG3) = Sample.fromArray( probabilities3, nextRNG1 )
+      draw3 should be( 2 )
+    }
   }
 }

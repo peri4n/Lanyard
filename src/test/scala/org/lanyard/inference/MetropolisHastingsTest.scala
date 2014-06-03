@@ -6,10 +6,10 @@ import org.lanyard.dist.cont.Uniform
 import org.lanyard.random.KISS
 
 import org.scalatest.FunSpec
-import org.scalatest.matchers.ShouldMatchers
+import org.scalatest.Matchers
 import org.scalatest.prop.GeneratorDrivenPropertyChecks
 
-class MetropolisHastingsTest extends FunSpec with ShouldMatchers with GeneratorDrivenPropertyChecks {
+class MetropolisHastingsTest extends FunSpec with Matchers with GeneratorDrivenPropertyChecks {
 
   describe("The metropolis hastings algorithm") {
 
